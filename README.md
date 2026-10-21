@@ -23,20 +23,11 @@ Original files are **never overwritten or altered** — outputs are always clean
 
 ## 🌟 Visual Showcase
 
-### Liquid-Glass Radial Menu
-Refracts desktop windows with real-time chromatic dispersion and adaptive frosted glass:
-![SuperDrag Radial Menu](docs/preview.png)
+Convert, compress, and edit with real-time chromatic dispersion and adaptive frosted glass:
 
-### SuperDrag Hub
-A dedicated desktop drop zone and control center for fast conversions:
-![SuperDrag Hub](docs/hub_window.png)
-
-### AI Background Removal ("Remove BG")
-Isolate subjects and cut out backgrounds with ONNX neural segmentation and instant transparency checkerboard preview:
-![SuperDrag Remove BG Tool](docs/remove_bg_tool.png)
-
-### About & Support
-![About SuperDrag](docs/about_window.png)
+<p align="center">
+  <img src="docs/preview.png" alt="SuperDrag Radial Menu and Liquid Glass Preview" width="100%">
+</p>
 
 ---
 
