@@ -109,6 +109,7 @@ class RadialMenu(QWidget):
         self.rings: dict[str, list[Item]] = {}
         self.ring_names: list[str] = []
         self.ring_idx = 0
+        self.requested_ring: str | None = None
         self.hover = -1          # petal index, -2 = hub, -1 = none
         self.cursor_pos = QPointF(SIZE / 2, SIZE / 2)
         self.hub_text = ""
@@ -131,11 +132,18 @@ class RadialMenu(QWidget):
         self.swap_anim = QVariantAnimation(self, startValue=0.0, endValue=1.0, duration=220,
                                            easingCurve=QEasingCurve.OutCubic)
         self.swap_anim.valueChanged.connect(self._set_swap)
-        self.hub_timer = QTimer(self, singleShot=True, interval=420, timeout=self.next_ring)
+        self.hub_timer = QTimer(self, singleShot=True, interval=900, timeout=self._hub_timeout)
         self.frame = QTimer(self, interval=16, timeout=self._tick)   # 60 fps springs
 
+    def _hub_timeout(self):
+        self.next_ring()
+        if self.hover == -2 and len(self.ring_names) > 1:
+            self.hub_timer.setInterval(1200)
+            self.hub_timer.start()
+
     # ------------------------------------------------------------ show / hide
-    def popup(self, pos: QPoint | None = None, paths: list[str] | None = None):
+    def popup(self, pos: QPoint | None = None, paths: list[str] | None = None, ring: str | None = None):
+        self.requested_ring = ring
         pos = pos or QCursor.pos()
         tl = pos - QPoint(SIZE // 2, SIZE // 2)
         scr = QGuiApplication.screenAt(pos) or QGuiApplication.primaryScreen()
@@ -223,6 +231,7 @@ class RadialMenu(QWidget):
 
     def hideEvent(self, e):
         self.frame.stop()
+        self.hub_timer.stop()
         if QWidget.mouseGrabber() is self:
             self.releaseMouse()
         super().hideEvent(e)
@@ -247,13 +256,33 @@ class RadialMenu(QWidget):
         self.paths = paths
         self.rings = {k: v for k, v in self.build_rings(paths).items() if v}
         self.ring_names = list(self.rings)
-        self.ring_idx = 0
+        if self.requested_ring and self.requested_ring in self.ring_names:
+            self.ring_idx = self.ring_names.index(self.requested_ring)
+        else:
+            self.ring_idx = 0
         self.hub_text = self.describe(paths)
         for items in self.rings.values():
             self._render(len(items))
         self.spring = [0.0] * len(self.items)
         self._shape()
         self.update()
+
+    def set_ring(self, name_or_idx: str | int):
+        if isinstance(name_or_idx, str):
+            if name_or_idx in self.ring_names:
+                idx = self.ring_names.index(name_or_idx)
+            else:
+                return
+        else:
+            idx = int(name_or_idx)
+        if 0 <= idx < len(self.ring_names) and idx != self.ring_idx:
+            self.ring_idx = idx
+            self.hover = -1
+            self.spring = [0.0] * len(self.items)
+            self._swap = 0.0
+            self.swap_anim.start()
+            self._shape()
+            self.update()
 
     def _shape(self):
         """No compositor (XFCE etc.): cut the window to the menu's outline."""
@@ -276,7 +305,8 @@ class RadialMenu(QWidget):
     def next_ring(self):
         if len(self.ring_names) > 1:
             self.ring_idx = (self.ring_idx + 1) % len(self.ring_names)
-            self.hover = -1
+            if self.hover != -2:
+                self.hover = -1
             self.spring = [0.0] * len(self.items)
             self._swap = 0.0
             self.swap_anim.start()
@@ -343,6 +373,7 @@ class RadialMenu(QWidget):
             if h >= 0:
                 self.hub_armed = True  # visited a petal: hovering the hub may now flip rings
             if h == -2 and self.hub_armed and len(self.ring_names) > 1:
+                self.hub_timer.setInterval(900)
                 self.hub_timer.start()
             else:
                 self.hub_timer.stop()
@@ -421,9 +452,11 @@ class RadialMenu(QWidget):
 
     # ------------------------------------------------------------ painting
     def _text_colors(self) -> tuple[QColor, QColor, QColor]:
-        if self.is_light:
-            return QColor(28, 20, 44), QColor(28, 20, 44, 170), QColor(255, 255, 255, 120)
-        return QColor(255, 255, 255), QColor(255, 255, 255, 190), QColor(0, 0, 0, 110)
+        # Always use crisp, glowing white text with deep ambient shadow on frosted glass
+        fg = QColor(255, 255, 255, 245)
+        fg_dim = QColor(215, 230, 255, 220)
+        shadow_col = QColor(0, 0, 0, 180)
+        return fg, fg_dim, shadow_col
 
     def paintEvent(self, e):
         p = QPainter(self)
@@ -477,17 +510,17 @@ class RadialMenu(QWidget):
         f.setBold(False)
         p.setFont(f)
         self._text(p, QRectF(c.x() - R_OUT, c.y() - r_mid + 1, 2 * R_OUT, 16),
-                   "Images · PDF · Word · Text", fg_dim, None)
+                   "Images · PDF · Word · Text", fg_dim, shadow_col)
 
     def _paint_fallback(self, p: QPainter, c: QPointF, n: int):
         hub = QPainterPath()
         hub.addEllipse(c, R_HUB, R_HUB)
-        glass.paint_glass(p, hub, self.backdrop, QPointF(0, 0), tint=QColor(22, 18, 34, 80),
+        glass.paint_glass(p, hub, self.backdrop, QPointF(0, 0), tint=QColor(18, 14, 28, 140),
                           rainbow_alpha=150, highlight=1.3)
         for i in range(n):
             a0, a1 = angles(n, i)
             glass.paint_glass(p, sector_path(c, R_IN, R_OUT, a0, a1), self.backdrop, QPointF(0, 0),
-                              tint=QColor(22, 18, 34, 62), rainbow_alpha=140)
+                              tint=QColor(18, 14, 28, 110), rainbow_alpha=140)
 
     def _paint_hover(self, p: QPainter, c: QPointF, a0: float, a1: float, h: float, img: QImage | None):
         mid = math.radians((a0 + a1) / 2)
@@ -508,37 +541,55 @@ class RadialMenu(QWidget):
             p.drawImage(0, 0, img)
             p.restore()
         else:
-            glass.paint_glass(p, path, self.backdrop, QPointF(0, 0), tint=QColor(22, 18, 34, 62),
+            glass.paint_glass(p, path, self.backdrop, QPointF(0, 0), tint=QColor(18, 14, 28, 120),
                               rainbow_alpha=140)
         p.restore()
 
     def _paint_hub(self, p: QPainter, c: QPointF, fg: QColor, fg_dim: QColor, shadow_col: QColor):
-        p.setPen(glass.iridescent_pen(c, 1.2, 150, angle=60))
+        # 1. Backing disc for center hub: guarantees zero bleed-through from desktop icons
+        hub_path = QPainterPath()
+        hub_path.addEllipse(c, R_HUB, R_HUB)
+        glass.paint_glass(p, hub_path, self.backdrop, QPointF(0, 0),
+                          tint=QColor(18, 14, 28, 140), rainbow_alpha=130, highlight=1.2)
+
+        # 2. Iridescent border
+        p.setPen(glass.iridescent_pen(c, 1.4, 180, angle=60))
         p.setBrush(Qt.NoBrush)
         p.drawEllipse(c, R_HUB - 0.5, R_HUB - 0.5)
 
         items = self.items
         hov = items[self.hover] if 0 <= self.hover < len(items) else None
         if hov is not None:
-            top, sub = hov.label if not hov.glyph else hov.label.title(), hov.hint or ""
+            top = hov.label if not hov.glyph else hov.label.title()
+            sub = hov.hint or ""
         else:
             ring_name = self.ring_names[self.ring_idx] if self.ring_names else ""
             top = self.hub_text
             if len(self.ring_names) > 1:
-                other = self.ring_names[(self.ring_idx + 1) % len(self.ring_names)]
-                sub = f"⇧ {other.upper()}"
+                key_hint = "Shift / Ctrl" if sys.platform == "win32" else "⇧ / ⌃"
+                sub = f"{ring_name.title()} · {key_hint}"
             else:
-                sub = ring_name.upper()
+                sub = ring_name.title()
+
         f = QFont(ui_family(True))
         f.setPixelSize(14)
         f.setBold(True)
+        f.setLetterSpacing(QFont.AbsoluteSpacing, 0.4)
+        from PySide6.QtGui import QFontMetrics
+        fm = QFontMetrics(f)
+        while f.pixelSize() > 10 and fm.horizontalAdvance(top) > (2 * R_HUB - 12):
+            f.setPixelSize(f.pixelSize() - 1)
+            fm = QFontMetrics(f)
         p.setFont(f)
-        rect_top = QRectF(c.x() - R_HUB + 4, c.y() - 21, 2 * R_HUB - 8, 20)
+        rect_top = QRectF(c.x() - R_HUB + 4, c.y() - 19, 2 * R_HUB - 8, 20)
         self._text(p, rect_top, top, fg, shadow_col)
-        f.setPixelSize(10)
+
+        f.setPixelSize(9.5)
         f.setBold(False)
+        f.setLetterSpacing(QFont.AbsoluteSpacing, 0.2)
         p.setFont(f)
-        self._text(p, QRectF(c.x() - R_HUB + 6, c.y() + 2, 2 * R_HUB - 12, 28), sub, fg_dim, None,
+        rect_sub = QRectF(c.x() - R_HUB + 4, c.y() + 2, 2 * R_HUB - 8, 28)
+        self._text(p, rect_sub, sub, fg_dim, shadow_col,
                    Qt.AlignHCenter | Qt.AlignTop | Qt.TextWordWrap)
 
     @staticmethod
@@ -546,7 +597,9 @@ class RadialMenu(QWidget):
               flags=Qt.AlignCenter):
         if shadow is not None:
             p.setPen(shadow)
-            p.drawText(r.translated(0, 1), flags, text)
+            # Ambient text shadow in multiple offsets for maximum legibility on any background:
+            for dx, dy in ((-1, 0), (1, 0), (0, -1), (0, 1), (0, 1.5)):
+                p.drawText(r.translated(dx, dy), flags, text)
         p.setPen(col)
         p.drawText(r, flags, text)
 
@@ -557,22 +610,61 @@ class RadialMenu(QWidget):
         pt = QPointF(c.x() + (r + push) * math.cos(rad), c.y() - (r + push) * math.sin(rad))
         p.save()
         p.setOpacity(p.opacity() * (0.25 + 0.75 * self._swap))
-        col = QColor(255, 255, 255) if h > 0.5 else fg   # hovered petal is warm-lit: white text
+
+        col = QColor(255, 255, 255, 255) if h > 0.3 else fg
+
+        n = len(self.items) or 1
+        # Generous dynamic box width matching the actual angular arc of the slice:
+        box_w = min(170.0, max(94.0, 580.0 / max(3, n)))
+        from PySide6.QtGui import QFontMetrics
         f = QFont(ui_family(True))
+
         if it.glyph:
-            f.setPixelSize(int(18 + 3 * h))
+            # 1. Glyph (icon)
+            f.setPixelSize(int(19 + 2 * h))
             p.setFont(f)
-            self._text(p, QRectF(pt.x() - 30, pt.y() - 24, 60, 24), it.glyph, col, shadow_col,
-                       Qt.AlignHCenter | Qt.AlignBottom)
-            f.setPixelSize(10)
+            glyph_rect = QRectF(pt.x() - box_w / 2, pt.y() - 25, box_w, 22)
+            self._text(p, glyph_rect, it.glyph, col, shadow_col, Qt.AlignHCenter | Qt.AlignBottom)
+
+            # 2. Text Label
+            display_label = it.label
+            f.setPixelSize(int(10.5 + h))
             f.setBold(True)
-            f.setLetterSpacing(QFont.AbsoluteSpacing, 0.7)
+            f.setLetterSpacing(QFont.AbsoluteSpacing, 0.4)
+
+            fm = QFontMetrics(f)
+            words = display_label.split()
+            # If multi-word and too wide for a single line, wrap cleanly into 2 lines:
+            if len(words) > 1 and fm.horizontalAdvance(display_label) > box_w - 6:
+                mid = len(words) // 2
+                display_label = " ".join(words[:mid]) + "\n" + " ".join(words[mid:])
+                box_h = 32
+                label_rect = QRectF(pt.x() - box_w / 2, pt.y() + 1, box_w, box_h)
+                flags = Qt.AlignHCenter | Qt.AlignTop | Qt.TextWordWrap
+            else:
+                while f.pixelSize() > 8.5 and fm.horizontalAdvance(display_label) > box_w - 6:
+                    f.setPixelSize(f.pixelSize() - 1)
+                    fm = QFontMetrics(f)
+                box_h = 18
+                label_rect = QRectF(pt.x() - box_w / 2, pt.y() + 2, box_w, box_h)
+                flags = Qt.AlignCenter
+
             p.setFont(f)
-            self._text(p, QRectF(pt.x() - 42, pt.y() + 1, 84, 16), it.label.upper(), col, shadow_col)
+            self._text(p, label_rect, display_label, col, shadow_col, flags)
         else:
-            f.setPixelSize(int(14 + 2 * h))
+            # Slices without glyph (e.g. JPG, PNG, WEBP, ZIP, TAR, GZIP)
+            display_label = it.label
+            f.setPixelSize(int(14 + 1.5 * h))
             f.setBold(True)
-            f.setLetterSpacing(QFont.AbsoluteSpacing, 0.9)
+            f.setLetterSpacing(QFont.AbsoluteSpacing, 0.6)
+
+            fm = QFontMetrics(f)
+            while f.pixelSize() > 9.5 and fm.horizontalAdvance(display_label) > box_w - 6:
+                f.setPixelSize(f.pixelSize() - 1)
+                fm = QFontMetrics(f)
+
             p.setFont(f)
-            self._text(p, QRectF(pt.x() - 42, pt.y() - 12, 84, 24), it.label, col, shadow_col)
+            label_rect = QRectF(pt.x() - box_w / 2, pt.y() - 14, box_w, 28)
+            self._text(p, label_rect, display_label, col, shadow_col, Qt.AlignCenter)
+
         p.restore()

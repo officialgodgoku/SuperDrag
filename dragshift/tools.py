@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Callable
 
 from PIL import Image
-from PySide6.QtCore import QPointF, QRectF, QSize, Qt, QTimer, QUrl
+from PySide6.QtCore import QPointF, QRectF, QSize, Qt, QTimer, QUrl, Signal
 from PySide6.QtGui import (QColor, QDesktopServices, QFont, QGuiApplication, QImage, QKeySequence,
                            QPainter, QPainterPath, QPen, QPixmap, QPolygonF, QShortcut)
 from PySide6.QtWidgets import (QButtonGroup, QCheckBox, QColorDialog, QComboBox, QFrame,
@@ -561,6 +561,180 @@ class AddBgWindow(ToolWindow):
             save_image(out_im, out, "PNG")
             return [out]
         self.run(work, "Adding background…")
+
+
+# ================================================================ REMOVE BG
+class TransparentPreview(ImageView):
+    """ImageView with a subtle dark checkerboard background to make transparency obvious."""
+    color_picked = Signal(object)  # (r, g, b)
+
+    def mousePressEvent(self, e):
+        if e.button() == Qt.LeftButton:
+            pt = self.to_image(e.position())
+            if 0 <= pt.x() < self.image.width() and 0 <= pt.y() < self.image.height():
+                col = self.image.pixelColor(int(pt.x()), int(pt.y()))
+                self.color_picked.emit((col.red(), col.green(), col.blue()))
+        super().mousePressEvent(e)
+
+    def paintEvent(self, e):
+        p = QPainter(self)
+        p.setRenderHint(QPainter.SmoothPixmapTransform)
+        p.setRenderHint(QPainter.Antialiasing)
+        t = self.target_rect()
+        if not t.isEmpty():
+            p.save()
+            p.setClipRect(t)
+            sz = 14
+            x0, y0 = int(t.left()), int(t.top())
+            x1, y1 = int(t.right()) + sz, int(t.bottom()) + sz
+            c1 = QColor(36, 40, 48, 230)
+            c2 = QColor(22, 25, 30, 230)
+            for y in range(y0, y1, sz):
+                for x in range(x0, x1, sz):
+                    col = c1 if ((x - x0) // sz + (y - y0) // sz) % 2 == 0 else c2
+                    p.fillRect(x, y, sz, sz, col)
+            p.restore()
+            if not self.pix.isNull():
+                p.drawPixmap(t, self.pix, QRectF(self.pix.rect()))
+        self.paint_overlay(p, t)
+
+
+class RemoveBgWindow(ToolWindow):
+    tool_name = "Remove BG"
+    MODES = ["Auto (AI)", "Color Key"]
+
+    def __init__(self, path, notify):
+        super().__init__("Remove BG", path, notify, size=(880, 780))
+        self.small = open_preview(path, 760)
+        with Image.open(path) as im:
+            self.full_size = im.size
+
+        self.ai_available = imaging.is_ai_bg_available()
+        self.small_saliency = imaging.compute_ai_saliency(self.small.convert("RGB")) if self.ai_available else None
+        self.custom_bg_color: tuple[int, int, int] | None = None
+
+        self.preview_view = TransparentPreview(qimage_from_pil(self.small))
+        self.preview_view.setMinimumSize(360, 320)
+        self.preview_view.color_picked.connect(self._on_color_picked)
+        self.body.addWidget(self.preview_view, 1)
+
+        self.out_label = QLabel()
+        self.out_label.setObjectName("dim")
+        self.out_label.setAlignment(Qt.AlignCenter)
+        self.body.addWidget(self.out_label)
+
+        self.body.addWidget(section("Detection & Edges"))
+
+        mode_row = QHBoxLayout()
+        mode_row.setSpacing(6)
+        self.mode_grp = QButtonGroup(self)
+        self.mode_grp.setExclusive(True)
+        for i, m in enumerate(self.MODES):
+            b = QPushButton(m)
+            b.setCheckable(True)
+            if i == 0 and self.ai_available:
+                b.setChecked(True)
+            elif i == 1 and not self.ai_available:
+                b.setChecked(True)
+            if i == 0 and not self.ai_available:
+                b.setEnabled(False)
+                b.setToolTip("AI model unavailable (using Color Key)")
+            self.mode_grp.addButton(b, i)
+            mode_row.addWidget(b)
+        mode_row.addStretch(1)
+        self.body.addLayout(mode_row)
+
+        grid = QGridLayout()
+        grid.setSpacing(8)
+        self.tol = slider(10, 90, 50)
+        slider_row(grid, 0, "Sensitivity / Tolerance", self.tol, lambda v: f"{v}%")
+        self.feather = slider(0, 10, 2)
+        slider_row(grid, 1, "Edge Softness", self.feather, lambda v: f"{v} px")
+        self.defringe = slider(0, 4, 1)
+        slider_row(grid, 2, "Defringe / Inset", self.defringe, lambda v: f"{v} px")
+        self.body.addLayout(grid)
+
+        opt_row = QHBoxLayout()
+        self.invert_cb = QCheckBox("Invert (keep background)")
+        self.invert_cb.setChecked(False)
+        opt_row.addWidget(self.invert_cb)
+        opt_row.addStretch(1)
+        self.body.addLayout(opt_row)
+
+        self.copy_btn = QPushButton("Copy")
+        self.copy_btn.setToolTip("Copy transparent PNG to clipboard")
+        self.copy_btn.clicked.connect(self.copy)
+        self.body.addLayout(self.footer("Save Transparent PNG", self.save, self.reset, [self.copy_btn]))
+
+        self._timer = QTimer(self, singleShot=True, interval=16, timeout=self.render)
+        self.tol.valueChanged.connect(lambda _: self._timer.start())
+        self.feather.valueChanged.connect(lambda _: self._timer.start())
+        self.defringe.valueChanged.connect(lambda _: self._timer.start())
+        self.invert_cb.toggled.connect(lambda _: self._timer.start())
+        self.mode_grp.idClicked.connect(lambda _: self._timer.start())
+
+        self.render()
+
+    def _on_color_picked(self, rgb):
+        if self.mode_grp.checkedId() == 1:  # Color Key
+            self.custom_bg_color = rgb
+            self.render()
+
+    def _params(self) -> imaging.RemoveBgParams:
+        mode_idx = self.mode_grp.checkedId()
+        mode = "ai" if mode_idx == 0 and self.ai_available else "color"
+        return imaging.RemoveBgParams(
+            mode=mode,
+            tolerance=self.tol.value(),
+            feather=self.feather.value(),
+            defringe=self.defringe.value(),
+            invert=self.invert_cb.isChecked(),
+            bg_color=self.custom_bg_color,
+        )
+
+    def render(self):
+        p = self._params()
+        out = imaging.remove_background(
+            self.small,
+            p,
+            precomputed_saliency=self.small_saliency if p.mode == "ai" else None,
+        )
+        self.preview_view.set_image(qimage_from_pil(out))
+        w, h = self.full_size
+        mode_desc = "AI Subject" if p.mode == "ai" else "Color Key"
+        self.out_label.setText(f"Output  {dims_text(w, h)} px  ·  PNG (Transparent)  ·  {mode_desc}")
+
+    def reset(self):
+        self.tol.setValue(50)
+        self.feather.setValue(2)
+        self.defringe.setValue(1)
+        self.invert_cb.setChecked(False)
+        self.custom_bg_color = None
+        if self.ai_available:
+            self.mode_grp.button(0).setChecked(True)
+        else:
+            self.mode_grp.button(1).setChecked(True)
+        self.render()
+
+    def _compose_full(self) -> Image.Image:
+        full_im = open_image(self.path)
+        return imaging.remove_background(full_im, self._params())
+
+    def copy(self):
+        full = self._compose_full()
+        QGuiApplication.clipboard().setImage(qimage_from_pil(full))
+        self.copy_btn.setText("Copied ✓")
+        QTimer.singleShot(1400, lambda: self.copy_btn.setText("Copy"))
+
+    def save(self):
+        params, path = self._params(), self.path
+
+        def work():
+            out = imaging.remove_background_file(path, params)
+            return [out]
+
+        self.run(work, "Removing background…")
+
 
 
 # ================================================================ ANNOTATE

@@ -5,18 +5,18 @@
 #endif
 
 [Setup]
-AppId={{6C1E2B0A-7D5F-4E8B-9F3A-D7A5F1C2B3E4}
-AppName=DragShift
+AppId={{9D2F3E4B-8E6A-4F9C-A04B-E8B6F2D3C4F5}
+AppName=SuperDrag
 AppVersion={#AppVersion}
-AppPublisher=DragShift
-DefaultDirName={localappdata}\Programs\DragShift
-DefaultGroupName=DragShift
+AppPublisher=SuperDrag
+DefaultDirName={localappdata}\Programs\SuperDrag
+DefaultGroupName=SuperDrag
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 OutputDir=..\dist
-OutputBaseFilename=DragShift-Setup
-SetupIconFile=..\dragshift\assets\dragshift.ico
-UninstallDisplayIcon={app}\DragShift.exe
+OutputBaseFilename=SuperDrag-Setup
+SetupIconFile=..\dragshift\assets\superdrag.ico
+UninstallDisplayIcon={app}\SuperDrag.exe
 Compression=lzma2/ultra64
 SolidCompression=yes
 WizardStyle=modern
@@ -24,28 +24,28 @@ CloseApplications=yes
 RestartApplications=no
 
 [Tasks]
-Name: "autostart"; Description: "Start DragShift when I sign in to Windows"; Flags: checkedonce
-Name: "contextmenu"; Description: "Add ""DragShift"" to the right-click menu for files"; Flags: checkedonce
+Name: "autostart"; Description: "Start SuperDrag when I sign in to Windows"; Flags: checkedonce
+Name: "contextmenu"; Description: "Add ""SuperDrag"" to the right-click menu for files"; Flags: checkedonce
 Name: "desktopicon"; Description: "Create a desktop shortcut"; Flags: unchecked
 
 [Files]
-Source: "..\dist\DragShift\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
+Source: "..\dist\SuperDrag\*"; DestDir: "{app}"; Flags: recursesubdirs ignoreversion
 
 [Icons]
-Name: "{autoprograms}\DragShift"; Filename: "{app}\DragShift.exe"
-Name: "{autodesktop}\DragShift"; Filename: "{app}\DragShift.exe"; Tasks: desktopicon
-Name: "{usersendto}\DragShift"; Filename: "{app}\DragShift.exe"
+Name: "{autoprograms}\SuperDrag"; Filename: "{app}\SuperDrag.exe"
+Name: "{autodesktop}\SuperDrag"; Filename: "{app}\SuperDrag.exe"; Tasks: desktopicon
+Name: "{usersendto}\SuperDrag"; Filename: "{app}\SuperDrag.exe"
 
 [Registry]
-Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "DragShift"; ValueData: """{app}\DragShift.exe"" --quiet"; Tasks: autostart; Flags: uninsdeletevalue
-Root: HKCU; Subkey: "Software\Classes\*\shell\DragShift"; ValueType: string; ValueName: "MUIVerb"; ValueData: "DragShift…"; Tasks: contextmenu; Flags: uninsdeletekey
-Root: HKCU; Subkey: "Software\Classes\*\shell\DragShift"; ValueType: string; ValueName: "Icon"; ValueData: "{app}\DragShift.exe"; Tasks: contextmenu
-Root: HKCU; Subkey: "Software\Classes\*\shell\DragShift"; ValueType: string; ValueName: "MultiSelectModel"; ValueData: "Player"; Tasks: contextmenu
-Root: HKCU; Subkey: "Software\Classes\*\shell\DragShift\command"; ValueType: string; ValueName: ""; ValueData: """{app}\DragShift.exe"" ""%1"""; Tasks: contextmenu
-Root: HKCU; Subkey: "Software\DragShift"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: string; ValueName: "SuperDrag"; ValueData: """{app}\SuperDrag.exe"" --quiet"; Tasks: autostart; Flags: uninsdeletevalue
+Root: HKCU; Subkey: "Software\Classes\*\shell\SuperDrag"; ValueType: string; ValueName: "MUIVerb"; ValueData: "SuperDrag…"; Tasks: contextmenu; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\*\shell\SuperDrag"; ValueType: string; ValueName: "Icon"; ValueData: "{app}\SuperDrag.exe"; Tasks: contextmenu
+Root: HKCU; Subkey: "Software\Classes\*\shell\SuperDrag"; ValueType: string; ValueName: "MultiSelectModel"; ValueData: "Player"; Tasks: contextmenu
+Root: HKCU; Subkey: "Software\Classes\*\shell\SuperDrag\command"; ValueType: string; ValueName: ""; ValueData: """{app}\SuperDrag.exe"" ""%1"""; Tasks: contextmenu
+Root: HKCU; Subkey: "Software\SuperDrag"; Flags: uninsdeletekey
 
 [Run]
-Filename: "{app}\DragShift.exe"; Description: "Launch DragShift now"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\SuperDrag.exe"; Description: "Launch SuperDrag now"; Flags: nowait postinstall skipifsilent
 
 [UninstallRun]
-Filename: "{cmd}"; Parameters: "/C taskkill /F /IM DragShift.exe"; Flags: runhidden; RunOnceId: "KillDragShift"
+Filename: "{cmd}"; Parameters: "/C taskkill /F /IM SuperDrag.exe"; Flags: runhidden; RunOnceId: "KillSuperDrag"

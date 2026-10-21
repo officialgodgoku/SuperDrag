@@ -18,7 +18,7 @@ class GlassWindow(QWidget):
 
     def __init__(self, title: str, parent=None, size=(760, 640)):
         super().__init__(parent)
-        self.setWindowTitle(f"{title} — DragShift")
+        self.setWindowTitle(f"{title} — SuperDrag")
         self.setWindowFlags(Qt.Window | Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.setAttribute(Qt.WA_DeleteOnClose)
@@ -73,8 +73,30 @@ class GlassWindow(QWidget):
         if sys.platform == "darwin":
             from . import platform_mac
             platform_mac.activate()   # menu-bar apps aren't brought forward automatically
+        elif IS_WIN:
+            try:
+                import ctypes
+                hwnd = int(self.winId())
+                ctypes.windll.user32.ShowWindow(hwnd, 9)
+                ctypes.windll.user32.SetForegroundWindow(hwnd)
+            except Exception:
+                pass
         self.raise_()
         self.activateWindow()
+
+    def bring_to_front(self):
+        self.show()
+        self.setWindowState(self.windowState() & ~Qt.WindowMinimized | Qt.WindowActive)
+        self.raise_()
+        self.activateWindow()
+        if IS_WIN:
+            try:
+                import ctypes
+                hwnd = int(self.winId())
+                ctypes.windll.user32.ShowWindow(hwnd, 9)
+                ctypes.windll.user32.SetForegroundWindow(hwnd)
+            except Exception:
+                pass
 
     def showEvent(self, e):
         super().showEvent(e)

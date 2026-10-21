@@ -132,7 +132,7 @@ def render(backdrop: Image.Image, sdf: np.ndarray, style: GlassStyle = GlassStyl
 
     # adaptive tint keeps text legible on any wallpaper
     if tint is None:
-        tint = (236, 232, 246, 0.14) if is_light else (18, 14, 30, 0.26)
+        tint = (18, 16, 32, 0.35) if is_light else (16, 12, 28, 0.30)
     tr, tg, tb, ta = tint
     out = out * (1 - ta) + np.array([tr, tg, tb], np.float32) * ta
 

@@ -30,7 +30,14 @@ def dims(path: Path) -> tuple[int, int] | None:
         with Image.open(path) as im:
             return im.size
     except Exception:
-        return None
+        pass
+    if category(path) == "video":
+        try:
+            from . import video
+            return video.get_video_dims(path)
+        except Exception:
+            pass
+    return None
 
 
 def pages(path: Path) -> int | None:
@@ -83,7 +90,7 @@ def summarize(action: str, srcs: list, outs: list, extra: str = "") -> Result:
         else:
             title = f"{src.suffix.lstrip('.').upper()} → {fmt}"
         bits = [o0.name if len(outs) == 1 else f"{o0.parent.name}/{o0.name} …"]
-        d = dims(o0) if category(o0) == "image" else None
+        d = dims(o0) if category(o0) in ("image", "video") else None
         if d:
             bits.append(_dim_str(d))
         if o0.suffix.lower() == ".pdf":
@@ -112,6 +119,10 @@ def summarize(action: str, srcs: list, outs: list, extra: str = "") -> Result:
 
     if name == "Add BG":
         return Result("Background added", f"{_dim_str(dims(o0))} PNG · {human_size(after)} · {o0.name}", outs, srcs)
+
+    if name == "Remove BG":
+        title = f"Removed BG from {len(outs)} images" if len(outs) > 1 else "Background removed"
+        return Result(title, f"{_dim_str(dims(o0))} PNG · {human_size(after)} · {o0.name}", outs, srcs, good="transparent PNG")
 
     if name == "Annotate":
         return Result("Annotated", f"{extra} · {o0.name}" if extra else o0.name, outs, srcs)

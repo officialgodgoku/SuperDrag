@@ -2,21 +2,62 @@
 from __future__ import annotations
 
 import os
+import sys
 from pathlib import Path
+
+
+def asset_path(name: str) -> Path:
+    """Resolve an asset file path, working in both source and PyInstaller environments."""
+    base = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent.parent))
+    cand = base / "dragshift" / "assets" / name
+    if cand.exists():
+        return cand
+    cand2 = Path(__file__).resolve().parent / "assets" / name
+    if cand2.exists():
+        return cand2
+    return cand
+
 
 IMAGE_EXTS = {".png", ".jpg", ".jpeg", ".webp", ".heic", ".heif", ".tif", ".tiff",
               ".avif", ".bmp", ".gif", ".ico"}
+VIDEO_EXTS = {".mp4", ".mov", ".mkv", ".webm", ".avi", ".wmv", ".flv", ".m4v", ".ts", ".3gp", ".ogv"}
+AUDIO_EXTS = {".mp3", ".m4a", ".wav", ".flac", ".ogg", ".opus", ".aiff", ".wma"}
 PDF_EXTS = {".pdf"}
-DOCX_EXTS = {".docx"}
-TEXT_EXTS = {".txt", ".md", ".csv", ".log", ".json", ".xml", ".html", ".htm"}
+DOCX_EXTS = {".docx", ".doc", ".odt", ".pages", ".rtf"}
+TEXT_EXTS = {".txt", ".md", ".log", ".json", ".xml", ".html", ".htm"}
+SPREADSHEET_EXTS = {".xlsx", ".ods", ".csv", ".tsv"}
+SLIDE_EXTS = {".ppt", ".pptx"}
+SUBTITLE_EXTS = {".srt", ".vtt"}
+ARCHIVE_EXTS = {".zip", ".tar", ".gz", ".tgz", ".bz2", ".xz", ".7z"}
+EPUB_EXTS = {".epub", ".mobi", ".fb2"}
 
 
 def category(path: str | Path) -> str | None:
-    ext = Path(path).suffix.lower()
+    p = Path(path)
+    if p.is_dir():
+        return "folder"
+    name_low = p.name.lower()
+    if any(name_low.endswith(x) for x in (".tar.gz", ".tar.bz2", ".tar.xz", ".tgz")):
+        return "archive"
+    ext = p.suffix.lower()
     if ext in IMAGE_EXTS:
         return "image"
+    if ext in VIDEO_EXTS:
+        return "video"
+    if ext in AUDIO_EXTS:
+        return "audio"
     if ext in PDF_EXTS:
         return "pdf"
+    if ext in SPREADSHEET_EXTS:
+        return "spreadsheet"
+    if ext in SLIDE_EXTS:
+        return "slides"
+    if ext in SUBTITLE_EXTS:
+        return "subtitle"
+    if ext in ARCHIVE_EXTS:
+        return "archive"
+    if ext in EPUB_EXTS:
+        return "epub"
     if ext in DOCX_EXTS:
         return "docx"
     if ext in TEXT_EXTS:
@@ -61,7 +102,7 @@ class UserError(Exception):
 
 # Runtime options (filled from Settings at start-up; plain values so worker threads can read them)
 CONFIG = {
-    "output": "next",        # "next" = beside the original, "folder" = a "DragShift" subfolder
+    "output": "next",        # "next" = beside the original, "folder" = a "SuperDrag" subfolder
     "jpg_quality": 90,
     "pdf_dpi": 200,
 }
@@ -70,7 +111,7 @@ CONFIG = {
 def output_dir(src: str | Path) -> Path:
     d = Path(src).parent
     if CONFIG.get("output") == "folder":
-        d = d / "DragShift"
+        d = d / "SuperDrag"
         d.mkdir(exist_ok=True)
     return d
 

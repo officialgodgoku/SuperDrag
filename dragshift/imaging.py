@@ -539,6 +539,132 @@ def add_background(im: Image.Image, bg: Background) -> Image.Image:
     return Image.alpha_composite(canvas, layer)
 
 
+# ---------------------------------------------------------------- remove background
+@dataclass
+class RemoveBgParams:
+    mode: str = "auto"         # "auto", "ai", "color"
+    tolerance: int = 50        # 1-100 (for AI: threshold shift; for Color: color distance)
+    feather: int = 2           # 0-10 px edge softness
+    defringe: int = 1          # 0-4 px mask erosion to avoid color spill
+    invert: bool = False       # Invert selection (keep background)
+    bg_color: tuple[int, int, int] | None = None
+
+
+_BG_SESSION = None
+_BG_SESSION_LOADED = False
+
+
+def is_ai_bg_available() -> bool:
+    """Check if the AI background removal engine is available."""
+    return _get_bg_session() is not None
+
+
+def _get_bg_session():
+    global _BG_SESSION, _BG_SESSION_LOADED
+    if _BG_SESSION_LOADED:
+        return _BG_SESSION
+    _BG_SESSION_LOADED = True
+    try:
+        from .util import asset_path
+        model_path = asset_path("u2netp.onnx")
+        if not model_path.exists():
+            user_path = Path.home() / ".u2net" / "u2netp.onnx"
+            if user_path.exists():
+                model_path = user_path
+        if model_path.exists():
+            import onnxruntime as ort
+            opts = ort.SessionOptions()
+            opts.graph_optimization_level = ort.GraphOptimizationLevel.ORT_ENABLE_ALL
+            opts.intra_op_num_threads = 4
+            _BG_SESSION = ort.InferenceSession(str(model_path), sess_options=opts, providers=["CPUExecutionProvider"])
+    except Exception:
+        _BG_SESSION = None
+    return _BG_SESSION
+
+
+def compute_ai_saliency(rgb_im: Image.Image) -> any:
+    """Run u2netp inference on an RGB image and return the normalized 0..1 saliency map as float32 array (320, 320)."""
+    sess = _get_bg_session()
+    if sess is None:
+        return None
+    import numpy as np
+    resized = rgb_im.resize((320, 320), Image.BILINEAR)
+    arr = np.array(resized, dtype=np.float32) / 255.0
+    mean = np.array([0.485, 0.456, 0.406], dtype=np.float32)
+    std = np.array([0.229, 0.224, 0.225], dtype=np.float32)
+    arr = (arr - mean) / std
+    arr = arr.transpose((2, 0, 1))
+    arr = np.expand_dims(arr, 0)
+    out = sess.run(None, {sess.get_inputs()[0].name: arr})
+    d0 = out[0][0, 0]
+    mi, ma = float(d0.min()), float(d0.max())
+    return (d0 - mi) / (ma - mi + 1e-8)
+
+
+def remove_background(im: Image.Image, params: RemoveBgParams | None = None,
+                      precomputed_saliency: any = None) -> Image.Image:
+    """Remove the background from `im`, returning an RGBA image with transparency."""
+    import numpy as np
+    p = params or RemoveBgParams()
+    w, h = im.size
+    rgb = im.convert("RGB")
+    mask_img: Image.Image | None = None
+
+    if p.mode in ("auto", "ai"):
+        try:
+            saliency = precomputed_saliency if precomputed_saliency is not None else compute_ai_saliency(rgb)
+            if saliency is not None:
+                # Tolerance scales cutoff: tolerance 50 -> cutoff 0.5
+                cutoff = 0.05 + (p.tolerance / 100.0) * 0.90
+                # Smooth sigmoid transition around cutoff
+                slope = 28.0
+                sig = 1.0 / (1.0 + np.exp(-slope * (saliency - cutoff)))
+                mask_arr = (np.clip(sig, 0.0, 1.0) * 255.0).astype(np.uint8)
+                mask_img = Image.fromarray(mask_arr, mode="L").resize((w, h), Image.BILINEAR)
+        except Exception:
+            mask_img = None
+
+    if mask_img is None or p.mode == "color":
+        # Color key / chroma matting fallback
+        arr = np.array(rgb, dtype=np.float32)
+        if p.bg_color is not None:
+            bg = np.array(p.bg_color, dtype=np.float32)
+        else:
+            corners = np.array([arr[0, 0], arr[0, w - 1], arr[h - 1, 0], arr[h - 1, w - 1]])
+            bg = np.median(corners, axis=0)
+        diff = np.sqrt(np.sum((arr - bg) ** 2, axis=-1))
+        thresh = max(1.0, p.tolerance * 2.5)
+        # Smooth alpha ramp
+        alpha = np.clip((diff - thresh * 0.6) / (thresh * 0.4 + 1e-5), 0.0, 1.0) * 255.0
+        mask_img = Image.fromarray(alpha.astype(np.uint8), mode="L")
+
+    if p.invert:
+        mask_img = ImageOps.invert(mask_img)
+
+    if p.defringe > 0:
+        mask_img = mask_img.filter(ImageFilter.MinFilter(p.defringe * 2 + 1))
+
+    if p.feather > 0:
+        mask_img = mask_img.filter(ImageFilter.GaussianBlur(p.feather))
+
+    out = im.convert("RGBA")
+    if im.mode == "RGBA":
+        # Respect existing alpha channel if any
+        mask_img = ImageChops.multiply(mask_img, im.split()[3])
+
+    out.putalpha(mask_img)
+    return out
+
+
+def remove_background_file(src: str | Path, params: RemoveBgParams | None = None) -> Path:
+    """Remove background from `src` and save next to it as '<name> No Background.png'."""
+    im = open_image(src)
+    out_im = remove_background(im, params)
+    out = sibling(src, "No Background", ".png")
+    save_image(out_im, out, "PNG")
+    return out
+
+
 # ---------------------------------------------------------------- Qt bridge
 def pil_to_png_bytes(im: Image.Image) -> bytes:
     buf = io.BytesIO()

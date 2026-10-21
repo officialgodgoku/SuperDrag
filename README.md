@@ -84,11 +84,17 @@ Every push runs these jobs on GitHub's Windows, Mac and Linux machines:
 - **Debian/XFCE:** builds the .deb on Debian 12, installs it, and runs the same kind of end-to-end test in Thunar under XFCE's window manager with the compositor **off**. Real XTest drags with Shift go through conversions, PDF tools, merging, the tool windows and Open With. The results and a recording are saved to the `e2e-linux-output` branch.
 - **Demo video:** pushing to the `demo` branch records a showcase video.
 
-## Support
+## Author
 
-DragShift is free. If it saves you time, you can leave a tip on Cash App: [**$AtikaKadesha**](https://cash.app/$AtikaKadesha). Thank you!
+Created by **Manish**.
 
-<img src="docs/tip-cashapp.png" alt="Cash App QR code for $AtikaKadesha" width="220">
+## Support & Contribute
+
+SuperDrag is free and open-source. If SuperDrag saves you time or boosts your productivity, consider supporting development:
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/officialgodgoku)
+
+You can also contribute code, submit feature requests, or report issues by checking out [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

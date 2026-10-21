@@ -24,9 +24,16 @@ except ImportError:  # pragma: no cover
     import fitz  # type: ignore
 
 IMAGE_TARGETS = ["PNG", "JPG", "WEBP", "HEIC", "TIFF", "AVIF", "BMP", "PDF", "ICO", "GIF"]
-PDF_TARGETS = ["JPG", "PNG", "DOCX", "TXT"]
-DOCX_TARGETS = ["PDF", "TXT"]
-TEXT_TARGETS = ["PDF", "DOCX"]
+VIDEO_TARGETS = ["MP4", "MKV", "WEBM", "AVI", "WMV", "GIF", "MP3", "MOV", "WAV"]
+AUDIO_TARGETS = ["MP3", "M4A", "WAV", "FLAC", "OGG", "OPUS", "AIFF", "WMA"]
+PDF_TARGETS = ["DOCX", "PAGES", "PPTX", "XLSX", "JPG", "PNG", "EPUB", "TXT", "MD"]
+DOCX_TARGETS = ["PDF", "DOCX", "TXT", "MD", "HTML", "EPUB", "JPG", "PNG"]
+TEXT_TARGETS = ["PDF", "DOCX", "TXT", "MD", "HTML", "EPUB", "JPG", "PNG"]
+SPREADSHEET_TARGETS = ["ODS", "CSV", "TSV", "PDF", "XLSX"]
+SLIDE_TARGETS = ["PDF", "JPG", "PNG"]
+SUBTITLE_TARGETS = ["VTT", "SRT", "TXT"]
+EPUB_TARGETS = ["PDF", "DOCX", "PAGES", "TXT", "MD", "HTML"]
+ARCHIVE_TARGETS = ["ZIP", "ZIP (Max)", "ZIP (Store)", "ZIP (BZIP2)", "ZIP (LZMA)", "TAR.GZ", "TAR"]
 
 PIL_FORMAT = {"PNG": "PNG", "JPG": "JPEG", "WEBP": "WEBP", "HEIC": "HEIF", "TIFF": "TIFF",
               "AVIF": "AVIF", "BMP": "BMP", "PDF": "PDF", "ICO": "ICO", "GIF": "GIF"}
@@ -361,23 +368,87 @@ def targets_for(cat: str, src_ext: str) -> list[str]:
         t = [x for x in IMAGE_TARGETS if x != cur]
         if not HEIF_OK:
             t = [x for x in t if x != "HEIC"]
+        if src_ext == "gif":
+            t.append("MP4")
         return t
-    return {"pdf": PDF_TARGETS, "docx": DOCX_TARGETS, "text": TEXT_TARGETS}.get(cat, [])
+    if cat == "video":
+        return [x for x in VIDEO_TARGETS if x != cur]
+    if cat == "audio":
+        return [x for x in AUDIO_TARGETS if x != cur]
+    if cat == "pdf":
+        return PDF_TARGETS
+    if cat == "docx":
+        return [x for x in DOCX_TARGETS if x != cur]
+    if cat == "text":
+        return [x for x in TEXT_TARGETS if x != cur]
+    if cat == "spreadsheet":
+        return [x for x in SPREADSHEET_TARGETS if x != cur]
+    if cat == "slides":
+        return SLIDE_TARGETS
+    if cat == "subtitle":
+        return [x for x in SUBTITLE_TARGETS if x != cur]
+    if cat == "epub":
+        return EPUB_TARGETS
+    if cat in ("folder", "archive"):
+        if cat == "archive":
+            return ["TAR", "GZIP", "ZIP"]
+        return ARCHIVE_TARGETS
+    return []
 
 
 def convert(src: str | Path, cat: str, target: str) -> list[Path]:
-    target = target.upper()
+    target_up = target.upper()
+    if cat == "video":
+        from . import video
+        return video.convert_video(src, target_up)
+    if cat == "audio":
+        from . import audio
+        return audio.convert_audio(src, target_up)
     if cat == "image":
-        return image_to(src, target)
+        if target_up == "MP4":
+            from . import video
+            return video.convert_video(src, "MP4")
+        return image_to(src, target_up)
+    if cat == "spreadsheet":
+        from . import sheets
+        return sheets.convert_sheet(src, target_up)
+    if cat == "slides":
+        from . import slides
+        return slides.convert_slides(src, target_up)
+    if cat == "subtitle":
+        from . import subtitles
+        return subtitles.convert_subtitle(src, target_up)
+    if cat == "epub":
+        from . import documents
+        return documents.epub_to(src, target_up)
+    if cat in ("folder", "archive"):
+        from . import archive
+        return archive.create_archive([src], target)
     if cat == "pdf":
-        if target in ("JPG", "PNG"):
-            return pdf_to_images(src, target)
-        if target == "TXT":
+        if target_up in ("JPG", "PNG"):
+            return pdf_to_images(src, target_up)
+        if target_up == "TXT":
             return pdf_to_txt(src)
-        if target == "DOCX":
+        if target_up in ("DOCX", "PAGES"):
             return pdf_to_docx(src)
-    if cat == "docx":
-        return docx_to_pdf(src) if target == "PDF" else docx_to_txt(src)
-    if cat == "text":
-        return text_to_pdf(src) if target == "PDF" else text_to_docx(src)
+        if target_up in ("MD", "MARKDOWN"):
+            from . import documents
+            return documents.pdf_to_md(src)
+        if target_up == "EPUB":
+            from . import documents
+            return documents.pdf_to_epub(src)
+        if target_up == "XLSX":
+            from . import documents
+            return documents.pdf_to_xlsx(src)
+        if target_up == "PPTX":
+            return pdf_to_images(src, "PNG")
+    if cat in ("docx", "text"):
+        if target_up == "PDF":
+            return docx_to_pdf(src) if cat == "docx" else text_to_pdf(src)
+        if target_up == "TXT":
+            return docx_to_txt(src)
+        if target_up in ("DOCX", "PAGES"):
+            return [Path(src)] if cat == "docx" else text_to_docx(src)
+        from . import documents
+        return documents.doc_to_all(src, target_up)
     raise ValueError(f"Can't convert {cat} to {target}")

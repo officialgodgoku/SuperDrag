@@ -320,7 +320,7 @@ jobs:
             **Linux** (Debian 12+, Ubuntu 23.04+, Mint, MX… on X11 desktops such as XFCE, MATE, Cinnamon):
             - **DragShift-linux-amd64.deb** — install with `sudo apt install ./DragShift-linux-amd64.deb`, then open DragShift from the app menu. Works with or without a compositor.
 
-            Enjoying DragShift? Tips are welcome: [Cash App $AtikaKadesha](https://cash.app/$AtikaKadesha) ♥
+            Enjoying SuperDrag? Contributions and feedback are welcome!
 
             Built automatically from commit ${{ github.sha }}.
           files: out/*
