@@ -1,7 +1,7 @@
 # SuperDrag
 
 <p align="center">
-  <img src="dragshift/assets/superdrag.png" alt="SuperDrag Icon" width="128" height="128"><br>
+  <img src="dragshift/assets/superdrag.png" alt="SuperDrag Icon" width="120" height="128"><br>
   <b>Fluid 3D Liquid-Glass Drag-and-Drop Conversion & Productivity Utility</b><br>
   <i>Created by <b>Manish</b></i>
 </p>
