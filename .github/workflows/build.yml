@@ -240,8 +240,8 @@ jobs:
           LC_ALL: C.UTF-8
         run: |
           mkdir -p e2e_linux_out
-          DEB="dist/SuperDrag-linux-amd64.deb"
-          if [ ! -f "$DEB" ]; then DEB="dist/DragShift-linux-amd64.deb"; fi
+          DEB="./dist/SuperDrag-linux-amd64.deb"
+          if [ ! -f "$DEB" ]; then DEB="./dist/DragShift-linux-amd64.deb"; fi
           apt-get install -y -q "$DEB" 2>&1 | tail -5
           APP_BIN="/usr/bin/superdrag"
           if [ ! -x "$APP_BIN" ]; then APP_BIN="/usr/bin/dragshift"; fi
