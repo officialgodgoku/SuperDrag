@@ -1,114 +1,148 @@
-# DragShift
+# SuperDrag
 
-Convert and edit files on **Windows, Mac and Linux** with a liquid-glass radial menu. Start dragging any file, press **Shift**, and drop it on a slice.
+<p align="center">
+  <img src="dragshift/assets/superdrag.png" alt="SuperDrag Icon" width="128" height="128"><br>
+  <b>Fluid 3D Liquid-Glass Drag-and-Drop Conversion & Productivity Utility</b><br>
+  <i>Created by <b>Manish</b></i>
+</p>
 
-![DragShift radial menu and Add BG editor](docs/preview.png)
+<p align="center">
+  <a href="https://github.com/officialgodgoku/SuperDrag/releases/latest"><img src="https://img.shields.io/badge/version-1.1.0-blue.svg?style=flat-square" alt="Version 1.1.0"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License MIT"></a>
+  <a href="https://www.python.org"><img src="https://img.shields.io/badge/python-3.11+-3776AB.svg?style=flat-square&logo=python&logoColor=white" alt="Python 3.11+"></a>
+  <a href="https://buymeacoffee.com/officialgodgoku"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"></a>
+</p>
 
-## Download
+---
 
-From the [latest release](../../releases/latest):
+SuperDrag lets you convert, compress, edit, and organize files on **Windows, macOS, and Linux** using an intuitive, real-time liquid-glass radial dial. Start dragging any file, press **Shift** (or **Ctrl** / **Alt**), and drop it onto a slice. 
 
-- **DragShift-Setup.exe** (recommended): installs for your user only, so no admin rights are needed. It adds a Start menu entry, an option to start with Windows, a right-click **DragShift…** entry and a **Send to → DragShift** entry. It uninstalls cleanly from Settings → Apps.
-- **DragShift.exe**: a portable version you can run from anywhere.
+Original files are **never overwritten or altered** — outputs are always cleanly generated next to the source.
 
-**Mac (easiest, no security warning):** paste this into Terminal:
+---
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/llamaboi55/DragShift/main/install-mac.sh | bash
-```
+## 🌟 Visual Showcase
 
-It picks the right build for your Mac, installs it to Applications and opens it ([see what it does](install-mac.sh)). Run the same line again to update.
+### Liquid-Glass Radial Menu
+Refracts desktop windows with real-time chromatic dispersion and adaptive frosted glass:
+![SuperDrag Radial Menu](docs/preview.png)
 
-Or download the .dmg yourself:
-- **DragShift-mac-apple-silicon.dmg**: for Macs with M1, M2, M3 or M4 chips (macOS 11 or later).
-- **DragShift-mac-intel.dmg**: for Intel Macs.
+### SuperDrag Hub
+A dedicated desktop drop zone and control center for fast conversions:
+![SuperDrag Hub](docs/hub_window.png)
 
-Open the .dmg and drag **DragShift** into Applications. DragShift lives in the menu bar and has no Dock icon. You can also right-click any file → **Open With → DragShift**.
+### AI Background Removal ("Remove BG")
+Isolate subjects and cut out backgrounds with ONNX neural segmentation and instant transparency checkerboard preview:
+![SuperDrag Remove BG Tool](docs/remove_bg_tool.png)
 
-**Linux (Debian, Ubuntu, Mint, MX… with XFCE, MATE, Cinnamon or any X11 desktop):** download **DragShift-linux-amd64.deb**, then run:
+### About & Support
+![About SuperDrag](docs/about_window.png)
 
-```bash
-sudo apt install ./DragShift-linux-amd64.deb
-```
+---
 
-Open **DragShift** from the app menu. It sits in the panel's notification area, and you can turn on *Start at login* in Settings. It works in Thunar, Nautilus, Nemo, Caja, Dolphin and on the desktop, and it also adds **Open With → DragShift** to file right-click menus. It works with or without a compositor: when compositing is off (common on XFCE), the menu and windows are cut to their exact shape, so you won't see black boxes. Builds target Debian 12 or newer (Ubuntu 23.04+).
+## 🚀 Key Features
 
-> **Wayland:** Wayland doesn't let apps read the global Shift and mouse state, so the Shift + drag trigger only works in X11 sessions (XFCE is X11). On GNOME/KDE Wayland, use right-click → **Open With → DragShift**, or pick *"Ubuntu on Xorg"* / *"Plasma (X11)"* at the login screen.
+- **Liquid-Glass Radial Dial**:
+  - **Convert Ring (`Shift + Drag`)**: Universal conversion across 40+ file formats (Images, Video, Audio, PDF, Office documents, Archives).
+  - **Actions Ring (`Ctrl + Drag`)**: LocalSend / AirDrop sharing, Floating Desktop Shelf, Clipboard Copy, Terminal Open, Path Copy.
+  - **Tools Ring (`Alt + Drag`)**: Compress, Resize, Crop, Edit, Annotate, Redact, Add BG, and Remove BG.
+  - Multi-file center dwell ring switching with smooth 900–1200ms debounce.
+- **AI Background Removal**:
+  - Deep-learning salient object detection (`u2netp` ONNX model bundled offline).
+  - High-performance Color Key & Chroma Matting with custom click-to-pick eyedropper.
+  - Real-time Sensitivity, Edge Softness (Gaussian feathering), and Defringing/Erosion controls.
+  - One-click copy transparent PNG to clipboard or save to disk.
+- **Hardware-Accelerated Video Processing**:
+  - Optional GPU encoding with NVIDIA NVENC (`h264_nvenc`, `hevc_nvenc`), Intel QuickSync (`h264_qsv`), AMD AMF (`h264_amf`), and Apple VideoToolbox (`h264_videotoolbox`).
+  - Video presets configurable from `veryfast` down to `slower` for precise speed vs file-size balance.
+- **Audio & Media Suite**:
+  - Peak volume normalization, waveform visualizer generation, audio bleep tone censorship, mono/stereo conversion.
+- **PDF & Document Tools**:
+  - Lossless and lossy PDF compression, AES-256 encryption, page rotation, splitting, and multi-file PDF merging.
+- **Universal Archive Management**:
+  - Extract archives with one click; compress folders into standard ZIP, TAR, TAR.GZ, BZIP2, or LZMA ultra.
 
-> **First launch on Windows:** SmartScreen may warn because the app isn't code-signed yet. Click **More info → Run anyway**.
->
-> **First launch on Mac, if you used the .dmg instead of the Terminal line:** macOS says *"Apple could not verify 'DragShift' is free of malware."* This happens with any app that hasn't paid for Apple's notarization; DragShift's code is all public in this repo. To open it:
-> 1. Open DragShift once and click **Done** on the warning.
-> 2. Go to  → **System Settings → Privacy & Security**, scroll down to *"DragShift was blocked…"* and click **Open Anyway**. Enter your password and confirm.
-> 3. That's it. macOS remembers the choice.
->
-> Or, in Terminal: `xattr -dr com.apple.quarantine /Applications/DragShift.app`
-> (On macOS 15 and later, the old right-click → Open shortcut no longer skips this warning.)
->
-> **Mac, optional:** allow **Screen Recording** when DragShift asks, so the glass can refract the windows behind it. Without it, the glass shows your wallpaper. Nothing is ever saved or sent.
+---
 
-## How to use
+## 📥 Download & Install
 
-1. Start dragging a file (an image, PDF, Word or text file; desktop shortcuts to one work too) in File Explorer, Finder, your Linux file manager or on the desktop.
-2. Press **Shift**. The menu opens under your cursor.
-3. Drop the file on a slice. The result is saved **next to the original**, and the original is never changed.
-4. To switch between **Convert** and **Tools**, tap **Shift** again.
+From the [**Latest Releases**](https://github.com/officialgodgoku/SuperDrag/releases/latest):
 
-Each action ends with a notification that shows what changed, for example *"2.4 MB → 610 KB · 75% smaller"* or *"2400×1600 → 1200×800"*, with **Open**, **Show in folder** and **Undo**. Undo moves the new file to the Recycle Bin (Trash on Mac and Linux).
+### Windows (Recommended)
+- **`SuperDrag-Setup.exe`**: Per-user silent or wizard installation (no administrator privileges required). Adds Start Menu shortcut, autostart option, and Explorer integration.
+- **`SuperDrag.exe`**: Portable standalone executable. Run anywhere without installing.
 
-You can also right-click a file → **DragShift…**, use **Send to → DragShift**, or double-click the tray icon to pick a file.
+### macOS (macOS 11+)
+- **`SuperDrag-mac-apple-silicon.dmg`**: For M1, M2, M3, M4 Macs.
+- **`SuperDrag-mac-intel.dmg`**: For Intel Macs.
+- Or install via Terminal:
+  ```bash
+  curl -fsSL https://raw.githubusercontent.com/officialgodgoku/SuperDrag/main/install-mac.sh | bash
+  ```
 
-## What it does
+### Linux (Debian, Ubuntu, Mint, XFCE/KDE/GNOME)
+- Download `SuperDrag-linux-amd64.deb` and install:
+  ```bash
+  sudo apt install ./SuperDrag-linux-amd64.deb
+  ```
 
-| File | Convert to | Tools |
+---
+
+## ⌨ Shortcuts & Usage
+
+| Trigger | Dial / Action | Capabilities |
 |---|---|---|
-| Images (JPG, PNG, WEBP, HEIC, AVIF, TIFF, BMP, GIF, ICO) | Any of those, or PDF. Several images become one combined PDF | **Compress** (by quality or to a target size such as "under 500 KB", with a before/after preview, several files at once) · **Resize** · **Crop** (ratios, live pixel size, rotate) · **Edit** (Auto, light/colour, rotate, flip, B&W, hold to compare) · **Annotate** (arrows, boxes, numbered steps, text, marker) · **Redact** · **Add BG** · **Metadata** (camera, date, GPS location with a map link; remove location only or remove everything) |
-| PDF | JPG or PNG (one per page), DOCX, TXT | Compress · Split · Rotate · Merge (drop several) · **Protect** (AES-256 password) · **Extract images** · Metadata |
-| Word (.docx) | PDF (uses Microsoft Word if it's installed, otherwise a built-in renderer), TXT | — |
-| Text (.txt, .md, .csv…) | PDF, DOCX | — |
+| **`Shift + Drag`** | **Convert Dial** | Image formats (PNG, JPG, WEBP, HEIC, AVIF, TIFF, BMP, ICO), Video formats (MP4, WEBM, MOV, MKV), Audio (MP3, WAV, FLAC, M4A), Docs (DOCX, PDF, TXT) |
+| **`Ctrl + Drag`** | **Actions Dial** | Send via LocalSend, Pin to Floating Shelf, Copy to Clipboard, Reveal Path, Open Terminal |
+| **`Alt + Drag`** | **Tools Dial** | Compress, Resize, Crop, Annotate, Redact, Add BG, Remove BG, Metadata Cleaner |
+| **Double-Click Tray** | **SuperDrag Hub** | Quick desktop drag-and-drop workspace and preferences |
 
-**Settings** (tray menu): trigger key (Shift, Ctrl or Alt), where results go (next to the original or a `DragShift` subfolder), JPG/WebP quality, PDF → image resolution, and start at login.
+---
 
-## The look
+## ☕ Support & Contribute
 
-The menu, notifications and windows use real **liquid-glass** rendering. DragShift captures the screen behind each surface and refracts it through the shape. A curved edge bends light, R, G and B bend by slightly different amounts (which gives the rainbow fringe), a highlight runs along the rim facing the light, and the tint adapts to what's behind it so text stays readable. The menu renders on a background thread while it pops in, so it still opens instantly.
+SuperDrag is free and open-source software created by **Manish**.
 
-## Tested on real desktops
+If SuperDrag saves you time or boosts your workflow, consider supporting development:
 
-Every push runs these jobs on GitHub's Windows, Mac and Linux machines:
+<p align="center">
+  <a href="https://buymeacoffee.com/officialgodgoku">
+    <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black" alt="Support on Buy Me a Coffee">
+  </a>
+</p>
 
-- **Build:** unit tests, the portable exe and installer builds, a self-test of each build, and a silent install → run → uninstall check.
-- **End-to-end:** a script moves the real mouse to drag files from File Explorer *and* the Desktop, presses Shift, drops on every conversion and tool, drives each tool window, and checks every output file (format, dimensions, page counts, encryption, metadata removed). The results table and a screen recording are saved to the `e2e-output` branch.
-- **Mac end-to-end:** real Finder drags with Shift (Quartz mouse and keyboard events) through conversions, PDF tools, merging and the tool windows. Every output is checked, and the run is recorded to the `e2e-mac-output` branch.
-- **Mac builds:** `DragShift.app` and the .dmg for Apple Silicon and Intel, each self-tested inside the app bundle.
-- **Debian/XFCE:** builds the .deb on Debian 12, installs it, and runs the same kind of end-to-end test in Thunar under XFCE's window manager with the compositor **off**. Real XTest drags with Shift go through conversions, PDF tools, merging, the tool windows and Open With. The results and a recording are saved to the `e2e-linux-output` branch.
-- **Demo video:** pushing to the `demo` branch records a showcase video.
+You can also contribute code, report bugs, or propose new features:
+- Read our [**Contributing Guide**](CONTRIBUTING.md)
+- Submit a [Bug Report](.github/ISSUE_TEMPLATE/bug_report.md) or [Feature Request](.github/ISSUE_TEMPLATE/feature_request.md)
 
-## Author
+---
 
-Created by **Manish**.
-
-## Support & Contribute
-
-SuperDrag is free and open-source. If SuperDrag saves you time or boosts your productivity, consider supporting development:
-
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/officialgodgoku)
-
-You can also contribute code, submit feature requests, or report issues by checking out [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## License
-
-[MIT](LICENSE): free to use, modify and share.
-
-## Run from source
+## 🛠 Run from Source
 
 ```bash
+# Clone the repository
+git clone https://github.com/officialgodgoku/SuperDrag.git
+cd SuperDrag
+
+# Install dependencies
 pip install -r requirements.txt
-python -m dragshift
+
+# Run SuperDrag
+python run.py
 ```
 
-On Linux, PySide6 also needs the Qt XCB libraries: `sudo apt install libxcb-cursor0 libxkbcommon-x11-0`.
+Run test suite:
+```bash
+python -m pytest tests/
+```
 
-Tests: `python -m pytest -q`. Logs are written to `%LOCALAPPDATA%\DragShift\log.txt` on Windows, `~/Library/Logs/DragShift/log.txt` on Mac and `~/.local/share/DragShift/log.txt` on Linux.
+---
 
-Windows builds will be code-signed by the SignPath Foundation, which provides free code signing for open-source projects.
+## 👤 Author
+
+Created by **Manish** ([@officialgodgoku](https://github.com/officialgodgoku))
+
+## 📄 License
+
+Licensed under the [MIT License](LICENSE). Free to use, modify, and distribute.
+
