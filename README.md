@@ -29,6 +29,48 @@ Convert, compress, and edit with real-time chromatic dispersion and adaptive fro
   <img src="docs/preview.png" alt="SuperDrag Radial Menu and Liquid Glass Preview" width="100%">
 </p>
 
+### 🎛️ SuperDrag Hub (Desktop Drop Zone & Launcher)
+Double-click the tray icon or drop files onto the desktop Hub to quickly access dials, browse files, and configure shortcuts:
+
+<p align="center">
+  <img src="docs/hub_window.png" alt="SuperDrag Hub Window" width="85%">
+</p>
+
+---
+
+## 📂 Radial Dials by File Category
+
+SuperDrag dynamically customizes its radial petal slices depending on what you are dragging:
+
+| **Images (Convert & Tools)** | **Videos (Convert & Media Tools)** |
+|:---:|:---:|
+| <img src="docs/dial_image.png" alt="Image Conversion Dial" width="320"><br><i>Image Formats (PNG, JPG, WEBP, HEIC, AVIF, TIFF, BMP, ICO)</i> | <img src="docs/dial_video.png" alt="Video Conversion Dial" width="320"><br><i>Video Formats (MP4, WEBM, MOV, MKV, MP3 extract)</i> |
+| **Image Tools Ring (Includes AI Remove BG)** | **Audio Tools & Encoders** |
+| <img src="docs/dial_tools.png" alt="Image Tools Ring" width="320"><br><i>Compress, Resize, Crop, Edit, Annotate, Redact, Add BG, <b>Remove BG</b></i> | <img src="docs/dial_audio.png" alt="Audio Tools Ring" width="320"><br><i>MP3, WAV, FLAC, Waveform Visualizer, Normalize, Bleep tone</i> |
+| **PDF Tools & Document Converter** | **Archive Compressions & Extraction** |
+| <img src="docs/dial_pdf.png" alt="PDF Tools Dial" width="320"><br><i>DOCX, JPG, PNG, TXT, Compress, Split, Rotate, Merge, Protect</i> | <img src="docs/dial_archive.png" alt="Archive Formats Dial" width="320"><br><i>ZIP (Deflate/Max/Store/BZIP2/LZMA), TAR.GZ, TAR, Extract</i> |
+
+### ⚡ File Actions Dial (`Ctrl + Drag`)
+Perform instant desktop operations on any file or folder:
+<p align="center">
+  <img src="docs/dial_actions.png" alt="File Actions Dial" width="340"><br>
+  <i>LocalSend / AirDrop sharing · Pin to Floating Shelf · Copy · Move · Copy Path · Open Terminal</i>
+</p>
+
+---
+
+## 🛠️ Functional Utility Tools
+
+SuperDrag features dedicated liquid-glass editor windows for precise controls:
+
+| **AI Background Removal ("Remove BG")** | **Smart Image & PDF Compression** |
+|:---:|:---:|
+| <img src="docs/remove_bg_tool.png" alt="Remove BG Tool" width="460"><br><i>ONNX neural subject cutout · Color Keying · Transparency checkerboard</i> | <img src="docs/compress_tool.png" alt="Compress Tool" width="460"><br><i>Visual before/after quality comparison · Live file size savings</i> |
+| **Canvas & Backdrop Studio ("Add BG")** | **Interactive Crop & Rotation ("Crop")** |
+| <img src="docs/add_bg_tool.png" alt="Add BG Tool" width="460"><br><i>CSS-style gradient backdrops · Soft drop shadows · Aspect ratio framing</i> | <img src="docs/crop_tool.png" alt="Crop Tool" width="460"><br><i>Aspect ratio presets (1:1, 4:3, 16:9, freeform) · 90° rotation</i> |
+| **GPU Hardware Acceleration & Settings** | **About SuperDrag & Community Sponsorship** |
+| <img src="docs/settings_window.png" alt="Settings Window" width="460"><br><i>Hardware acceleration (NVIDIA NVENC, Intel QSV, AMD AMF)</i> | <img src="docs/about_window.png" alt="About SuperDrag Window" width="460"><br><i>Version info, Manish credit, hardware acceleration status & Buy Me a Coffee</i> |
+
 ---
 
 ## 🚀 Key Features
