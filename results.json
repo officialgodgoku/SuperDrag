@@ -1,0 +1,135 @@
+[
+ {
+  "name": "JPG \u2192 PNG",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "PASS",
+  "detail": "D-Photo.png \u00b7 2400\u00d71600",
+  "seconds": 9.9
+ },
+ {
+  "name": "JPG \u2192 WEBP",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "PASS",
+  "detail": "D-Photo.webp \u00b7 2400\u00d71600",
+  "seconds": 9.0
+ },
+ {
+  "name": "JPG \u2192 HEIC",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "PASS",
+  "detail": "D-Photo.heic \u00b7 2400\u00d71600",
+  "seconds": 10.3
+ },
+ {
+  "name": "JPG \u2192 PDF",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "PASS",
+  "detail": "D-Photo.pdf \u00b7 1 page(s)",
+  "seconds": 8.7
+ },
+ {
+  "name": "PNG \u2192 JPG",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "PASS",
+  "detail": "D-Graphic.jpg \u00b7 800\u00d7533",
+  "seconds": 8.7
+ },
+ {
+  "name": "PDF \u2192 JPG (3 pages)",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "PASS",
+  "detail": "3 \u00d7 .jpg",
+  "seconds": 9.9
+ },
+ {
+  "name": "PDF \u2192 TXT",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "PASS",
+  "detail": "D-Report.txt",
+  "seconds": 8.7
+ },
+ {
+  "name": "DOCX \u2192 PDF",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "PASS",
+  "detail": "D-Letter.pdf \u00b7 1 page(s)",
+  "seconds": 8.7
+ },
+ {
+  "name": "TXT \u2192 PDF",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "PASS",
+  "detail": "D-Notes.pdf \u00b7 1 page(s)",
+  "seconds": 8.7
+ },
+ {
+  "name": "PDF Split",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "FAIL",
+  "detail": "AssertionError: 0 PDFs",
+  "seconds": 9.9
+ },
+ {
+  "name": "PDF Rotate",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "FAIL",
+  "detail": "AssertionError: ",
+  "seconds": 11.2
+ },
+ {
+  "name": "PDF Compress",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "PASS",
+  "detail": "227 KB \u2192 232 KB",
+  "seconds": 9.6
+ },
+ {
+  "name": "Merge 2 PDFs",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "FAIL",
+  "detail": "AssertionError: 1 pages, expected 5",
+  "seconds": 10.7
+ },
+ {
+  "name": "Compress (window, Enter)",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "FAIL",
+  "detail": "AssertionError: ",
+  "seconds": 12.3
+ },
+ {
+  "name": "Resize 50% (window, Enter)",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "FAIL",
+  "detail": "AssertionError: no output file appeared",
+  "seconds": 26.5
+ },
+ {
+  "name": "Add BG (window, Enter)",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "FAIL",
+  "detail": "UnidentifiedImageError: cannot identify image file '/github/home/DragShiftTest/16/D-Graphic.pdf'",
+  "seconds": 12.8
+ },
+ {
+  "name": "Metadata: remove all (Enter)",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "FAIL",
+  "detail": "AssertionError: no output file appeared",
+  "seconds": 26.5
+ },
+ {
+  "name": "PDF Protect (password)",
+  "where": "thunar (xfwm4, no compositor)",
+  "status": "FAIL",
+  "detail": "AssertionError: ",
+  "seconds": 12.4
+ },
+ {
+  "name": "Open With \u2192 AVIF (click)",
+  "where": "thunar",
+  "status": "PASS",
+  "detail": "D-Photo.avif \u00b7 2400\u00d71600",
+  "seconds": 8.4
+ }
+]

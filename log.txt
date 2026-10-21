@@ -1,0 +1,90 @@
+[   0.00] display :99 screen (1280, 800) cmd ['superdrag']
+[  16.65] PASS JPG → PNG                        9.9s  D-Photo.png · 2400×1600
+[  26.26] PASS JPG → WEBP                       9.0s  D-Photo.webp · 2400×1600
+[  37.19] PASS JPG → HEIC                      10.3s  D-Photo.heic · 2400×1600
+[  46.54] PASS JPG → PDF                        8.7s  D-Photo.pdf · 1 page(s)
+[  55.86] PASS PNG → JPG                        8.7s  D-Graphic.jpg · 800×533
+[  66.31] PASS PDF → JPG (3 pages)              9.9s  3 × .jpg
+[  75.63] PASS PDF → TXT                        8.7s  D-Report.txt
+[  84.95] PASS DOCX → PDF                       8.7s  D-Letter.pdf · 1 page(s)
+[  94.27] PASS TXT → PDF                        8.7s  D-Notes.pdf · 1 page(s)
+[ 104.72] Traceback (most recent call last):
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_linux.py", line 254, in run
+    msg = verify(outs, srcs) or ", ".join(o.name for o in outs[:3])
+          ^^^^^^^^^^^^^^^^^^
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_windows.py", line 432, in v
+    assert len(pdfs) == n, f"{len(pdfs)} PDFs"
+           ^^^^^^^^^^^^^^
+AssertionError: 0 PDFs
+
+[ 104.81] FAIL PDF Split                        9.9s  AssertionError: 0 PDFs
+[ 116.54] Traceback (most recent call last):
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_linux.py", line 254, in run
+    msg = verify(outs, srcs) or ", ".join(o.name for o in outs[:3])
+          ^^^^^^^^^^^^^^^^^^
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_windows.py", line 447, in v_rotated
+    assert all(p.rotation == 90 for p in d)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+[ 116.63] FAIL PDF Rotate                      11.2s  AssertionError: 
+[ 126.83] PASS PDF Compress                     9.6s  227 KB → 232 KB
+[ 138.02] Traceback (most recent call last):
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_linux.py", line 254, in run
+    msg = verify(outs, srcs) or ", ".join(o.name for o in outs[:3])
+          ^^^^^^^^^^^^^^^^^^
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_windows.py", line 440, in v_merged
+    assert got == total, f"{got} pages, expected {total}"
+           ^^^^^^^^^^^^
+AssertionError: 1 pages, expected 5
+
+[ 138.11] FAIL Merge 2 PDFs                    10.7s  AssertionError: 1 pages, expected 5
+[ 150.96] Traceback (most recent call last):
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_linux.py", line 254, in run
+    msg = verify(outs, srcs) or ", ".join(o.name for o in outs[:3])
+          ^^^^^^^^^^^^^^^^^^
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_linux.py", line 293, in v_smaller
+    assert s1 < s0
+           ^^^^^^^
+AssertionError
+
+[ 151.06] FAIL Compress (window, Enter)        12.3s  AssertionError: 
+[ 178.05] Traceback (most recent call last):
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_linux.py", line 253, in run
+    raise AssertionError("no output file appeared")
+AssertionError: no output file appeared
+
+[ 178.14] FAIL Resize 50% (window, Enter)      26.5s  AssertionError: no output file appeared
+[ 191.41] Traceback (most recent call last):
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_linux.py", line 254, in run
+    msg = verify(outs, srcs) or ", ".join(o.name for o in outs[:3])
+          ^^^^^^^^^^^^^^^^^^
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_linux.py", line 284, in v
+    sb = img_ok(outs[0])
+         ^^^^^^^^^^^^^^^
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_windows.py", line 140, in img_ok
+    with Image.open(p) as im:
+         ^^^^^^^^^^^^^
+  File "/opt/venv/lib/python3.12/site-packages/PIL/Image.py", line 3730, in open
+    raise UnidentifiedImageError(msg)
+PIL.UnidentifiedImageError: cannot identify image file '/github/home/DragShiftTest/16/D-Graphic.pdf'
+
+[ 191.52] FAIL Add BG (window, Enter)          12.8s  UnidentifiedImageError: cannot identify image file '/github/home/DragShiftTest/16/D-Graphic.pdf'
+[ 218.53] Traceback (most recent call last):
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_linux.py", line 253, in run
+    raise AssertionError("no output file appeared")
+AssertionError: no output file appeared
+
+[ 218.61] FAIL Metadata: remove all (Enter)    26.5s  AssertionError: no output file appeared
+[ 231.56] Traceback (most recent call last):
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_linux.py", line 254, in run
+    msg = verify(outs, srcs) or ", ".join(o.name for o in outs[:3])
+          ^^^^^^^^^^^^^^^^^^
+  File "/__w/SuperDrag/SuperDrag/demo/e2e_windows.py", line 454, in v_protected
+    assert d.needs_pass and d.authenticate("keywest2026")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+[ 231.65] FAIL PDF Protect (password)          12.4s  AssertionError: 
+[ 240.63] PASS Open With → AVIF (click)         8.4s  D-Photo.avif · 2400×1600
+[ 240.75] DONE 11/19
