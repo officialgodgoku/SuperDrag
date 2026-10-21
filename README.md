@@ -54,7 +54,7 @@ SuperDrag dynamically customizes its radial petal slices depending on what you a
 Perform instant desktop operations on any file or folder:
 <p align="center">
   <img src="docs/dial_actions.png" alt="File Actions Dial" width="340"><br>
-  <i>LocalSend / AirDrop sharing · Pin to Floating Shelf · Copy · Move · Copy Path · Open Terminal</i>
+  <i>LocalSend sharing · Pin to Floating Shelf · Copy · Move · Copy Path · Open Terminal</i>
 </p>
 
 ---
@@ -69,7 +69,7 @@ SuperDrag features dedicated liquid-glass editor windows for precise controls:
 | **Canvas & Backdrop Studio ("Add BG")** | **Interactive Crop & Rotation ("Crop")** |
 | <img src="docs/add_bg_tool.png" alt="Add BG Tool" width="460"><br><i>CSS-style gradient backdrops · Soft drop shadows · Aspect ratio framing</i> | <img src="docs/crop_tool.png" alt="Crop Tool" width="460"><br><i>Aspect ratio presets (1:1, 4:3, 16:9, freeform) · 90° rotation</i> |
 | **GPU Hardware Acceleration & Settings** | **About SuperDrag & Community Sponsorship** |
-| <img src="docs/settings_window.png" alt="Settings Window" width="460"><br><i>Hardware acceleration (NVIDIA NVENC, Intel QSV, AMD AMF)</i> | <img src="docs/about_window.png" alt="About SuperDrag Window" width="460"><br><i>Version info, Manish credit, hardware acceleration status & Buy Me a Coffee</i> |
+| <img src="docs/settings_window.png" alt="Settings Window" width="460"><br><i>Hardware acceleration (NVIDIA NVENC, Intel QSV, AMD AMF)</i> | <img src="docs/about_window.png" alt="About SuperDrag Window" width="460"><br><i>Version info</i> |
 
 ---
 
@@ -77,7 +77,7 @@ SuperDrag features dedicated liquid-glass editor windows for precise controls:
 
 - **Liquid-Glass Radial Dial**:
   - **Convert Ring (`Shift + Drag`)**: Universal conversion across 40+ file formats (Images, Video, Audio, PDF, Office documents, Archives).
-  - **Actions Ring (`Ctrl + Drag`)**: LocalSend / AirDrop sharing, Floating Desktop Shelf, Clipboard Copy, Terminal Open, Path Copy.
+  - **Actions Ring (`Ctrl + Drag`)**: LocalSend sharing, Floating Desktop Shelf, Clipboard Copy, Terminal Open, Path Copy.
   - **Tools Ring (`Alt + Drag`)**: Compress, Resize, Crop, Edit, Annotate, Redact, Add BG, and Remove BG.
   - Multi-file center dwell ring switching with smooth 900–1200ms debounce.
 - **AI Background Removal**:
