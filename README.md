@@ -121,6 +121,23 @@ From the [**Latest Releases**](https://github.com/officialgodgoku/SuperDrag/rele
 
 ---
 
+## 🔍 Supported Tools & Capabilities Index
+
+SuperDrag is built as an all-in-one offline desktop productivity powerhouse. Below is an index of all supported tools, formats, and capabilities:
+
+| Category | Available Tools & Features | Supported File Types & Search Keywords |
+|---|---|---|
+| **🪄 AI Background Removal** | Neural salient subject cutout, Color Keying / Chroma matting, eyedropper color picker, sensitivity slider, edge softness (Gaussian feather), defringing / erosion, real-time transparency checkerboard preview | `remove-bg`, `transparent background`, `cutout image`, `png transparent`, `chroma key`, `green screen remover`, `ai background remover`, `offline background removal` |
+| **🖼️ Image Conversion** | 1-click batch and single-file conversions with color space preservation, multi-frame support, icon creation | `PNG`, `JPG / JPEG`, `WEBP`, `HEIC / HEIF`, `AVIF`, `TIFF`, `BMP`, `ICO (Favicon maker)`, `heic to png`, `heic to jpg`, `webp converter` |
+| **✂️ Image Editing & Tools** | Smart compression with visual diff & live size reduction, aspect ratio crop (`1:1`, `4:3`, `16:9`, freeform), 90° rotation, gradient backdrops ("Add BG"), soft drop shadows, image annotations, sensitive data redaction & blur, EXIF metadata scrubber | `compress image`, `reduce file size`, `crop tool`, `image backdrop`, `gradient background`, `redact image`, `blur info`, `clean metadata`, `image optimizer` |
+| **📄 PDF & Document Suite** | Lossless & lossy PDF compression, multi-file PDF merge, PDF page splitting, 90° page rotation, AES-256 PDF encryption & password protection, PDF to image page export, Word to PDF, Sheets conversion | `PDF compressor`, `merge pdf`, `split pdf`, `rotate pdf`, `password protect pdf`, `docx to pdf`, `pdf to docx`, `pdf to png`, `csv to xlsx`, `excel to csv`, `markdown to pdf` |
+| **🎬 Video Processing** | GPU hardware-accelerated video encoding (NVIDIA NVENC, Intel QuickSync QSV, AMD AMF, Apple VideoToolbox), preset rate control (`ultrafast` to `veryslow`), audio track extraction, video container transcode | `MP4`, `WEBM`, `MOV`, `MKV`, `extract mp3 from video`, `video compressor`, `hardware accelerated converter`, `nvenc encoder`, `offline video converter` |
+| **🎵 Audio Utilities** | Peak volume normalization, waveform visualizer PNG generator, audio censor bleep tone synthesizer, mono/stereo downmixing, bitrate control | `MP3`, `WAV`, `FLAC`, `M4A`, `audio normalizer`, `waveform generator`, `bleep audio`, `audio converter` |
+| **📦 Archive Utilities** | Fast extraction, archive creation with configurable compression algorithms (Deflate, BZIP2, LZMA ultra, Store) | `ZIP`, `TAR`, `TAR.GZ`, `extract archive`, `zip compressor`, `tar creator` |
+| **⚡ Desktop Productivity** | Fluid liquid-glass radial dial, LocalSend / AirDrop sharing, persistent floating shelf drop zone, copy path, terminal launcher, SuperDrag Hub | `radial menu`, `pie menu`, `drag and drop utility`, `localsend`, `floating shelf`, `offline cloudconvert alternative` |
+
+---
+
 ## ⌨ Shortcuts & Usage
 
 | Trigger | Dial / Action | Capabilities |
