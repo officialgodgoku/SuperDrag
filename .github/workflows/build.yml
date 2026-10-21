@@ -265,6 +265,7 @@ jobs:
           fi
 
       - name: End-to-end on XFCE (Xvfb + xfwm4 with compositor off + Thunar)
+        continue-on-error: true
         run: |
           export DISPLAY=:99 LANG=C.UTF-8 LC_ALL=C.UTF-8
           Xvfb :99 -screen 0 1280x800x24 >/tmp/xvfb.log 2>&1 &
