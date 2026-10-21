@@ -45,7 +45,8 @@ RESULTS: list[dict] = []
 T0 = time.time()
 R_PETAL = 109
 WIN = (40, 40, 600, 540)           # Thunar window x, y, w, h
-CMD = shlex.split(os.environ.get("DRAGSHIFT_CMD", "dragshift"))
+_default_cmd = "superdrag" if shutil.which("superdrag") else "dragshift"
+CMD = shlex.split(os.environ.get("DRAGSHIFT_CMD", _default_cmd))
 
 
 def log(*a):
@@ -339,9 +340,10 @@ def main():
     shutil.rmtree(BASE, ignore_errors=True)
     BASE.mkdir(parents=True, exist_ok=True)
     make_files(BASE / "src", "D-")
-    cfg = Path.home() / ".config" / "DragShift"
-    cfg.mkdir(parents=True, exist_ok=True)
-    (cfg / "DragShift.conf").write_text("[General]\nwelcomed=true\n")
+    for app_name in ("SuperDrag", "DragShift"):
+        cfg = Path.home() / ".config" / app_name
+        cfg.mkdir(parents=True, exist_ok=True)
+        (cfg / f"{app_name}.conf").write_text("[General]\nwelcomed=true\n")
     env = dict(os.environ, DRAGSHIFT_RECORDING="1")
     applog = open(OUT / "app_log.txt", "w")
     app = subprocess.Popen(CMD + ["--quiet"], env=env, stdout=applog, stderr=subprocess.STDOUT)

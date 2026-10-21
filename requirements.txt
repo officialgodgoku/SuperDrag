@@ -4,6 +4,8 @@ pillow-heif>=0.18
 PyMuPDF>=1.24
 numpy>=1.26
 python-docx>=1.1
+openpyxl>=3.1.0
+onnxruntime>=1.16.0
 pywin32>=306; sys_platform == "win32"
 imageio-ffmpeg>=0.5.0
 pyobjc-framework-Cocoa>=10; sys_platform == "darwin"

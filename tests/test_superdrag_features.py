@@ -104,10 +104,17 @@ def test_sheets_conversions(temp_dir):
     tsv_text = tsv_outs[0].read_text(encoding="utf-8")
     assert "Alice\tAdmin\t99" in tsv_text
 
-    # 2. CSV -> XLSX
-    xlsx_outs = sheets.convert_sheet(csv_file, "XLSX")
-    assert len(xlsx_outs) == 1 and xlsx_outs[0].suffix == ".xlsx"
-    assert xlsx_outs[0].stat().st_size > 0
+    # 2. CSV -> XLSX (if openpyxl is installed)
+    try:
+        import openpyxl
+        has_openpyxl = True
+    except ImportError:
+        has_openpyxl = False
+
+    if has_openpyxl:
+        xlsx_outs = sheets.convert_sheet(csv_file, "XLSX")
+        assert len(xlsx_outs) == 1 and xlsx_outs[0].suffix == ".xlsx"
+        assert xlsx_outs[0].stat().st_size > 0
 
     # 3. CSV -> PDF
     pdf_outs = sheets.convert_sheet(csv_file, "PDF")
