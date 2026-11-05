@@ -77,6 +77,7 @@ class LocalSendWindow(GlassWindow):
         notify_info: Callable[[str, str], None] | None = None,
         notify_error: Callable[[str, str], None] | None = None,
         parent=None,
+        auto_scan: bool = True,
     ):
         super().__init__("LocalSend • Share with Devices", parent, size=(580, 520))
         self.paths = [os.path.abspath(p) for p in paths if os.path.exists(p)]
@@ -85,12 +86,14 @@ class LocalSendWindow(GlassWindow):
         self.devices: list[LocalSendDevice] = []
         self._thread: QThread | None = None
         self._send_thread: QThread | None = None
+        self._discovery_worker: _DiscoveryWorker | None = None
+        self._send_worker: _SendWorker | None = None
 
-        total_bytes = sum(os.path.getsize(p) for p in self.paths)
+        total_bytes = sum(os.path.getsize(p) for p in self.paths if os.path.exists(p))
         summary_txt = f"{len(self.paths)} file{'s' if len(self.paths) != 1 else ''} • {human_size(total_bytes)}"
 
-        # Layout inside self.body
-        layout = QVBoxLayout(self.body)
+        # self.body is already a QVBoxLayout in GlassWindow
+        layout = self.body
         layout.setContentsMargins(16, 8, 16, 16)
         layout.setSpacing(10)
 
@@ -198,7 +201,8 @@ class LocalSendWindow(GlassWindow):
         layout.addLayout(manual_row)
 
         # Trigger background scan
-        self.start_scan()
+        if auto_scan:
+            self.start_scan()
 
     def start_scan(self):
         """Start non-blocking network scan."""
@@ -207,12 +211,12 @@ class LocalSendWindow(GlassWindow):
         self.table.setRowCount(0)
 
         self._thread = QThread(self)
-        worker = _DiscoveryWorker()
-        worker.moveToThread(self._thread)
-        self._thread.started.connect(worker.run)
-        worker.found_devices.connect(self._on_devices_found)
-        worker.finished.connect(self._on_scan_finished)
-        worker.finished.connect(self._thread.quit)
+        self._discovery_worker = _DiscoveryWorker()
+        self._discovery_worker.moveToThread(self._thread)
+        self._thread.started.connect(self._discovery_worker.run)
+        self._discovery_worker.found_devices.connect(self._on_devices_found)
+        self._discovery_worker.finished.connect(self._on_scan_finished)
+        self._discovery_worker.finished.connect(self._thread.quit)
         self._thread.start()
 
     def _on_devices_found(self, devs: list[LocalSendDevice]):
@@ -273,16 +277,28 @@ class LocalSendWindow(GlassWindow):
         self.direct_send_btn.setEnabled(False)
 
         self._send_thread = QThread(self)
-        worker = _SendWorker(dev, self.paths)
-        worker.moveToThread(self._send_thread)
-        self._send_thread.started.connect(worker.run)
+        self._send_worker = _SendWorker(dev, self.paths)
+        self._send_worker.moveToThread(self._send_thread)
+        self._send_thread.started.connect(self._send_worker.run)
 
-        worker.status_changed.connect(lambda s: self.status_lbl.setText(s))
-        worker.progress_changed.connect(self._on_progress)
-        worker.send_finished.connect(self._on_send_finished)
-        worker.send_finished.connect(self._send_thread.quit)
+        self._send_worker.status_changed.connect(lambda s: self.status_lbl.setText(s))
+        self._send_worker.progress_changed.connect(self._on_progress)
+        self._send_worker.send_finished.connect(self._on_send_finished)
+        self._send_worker.send_finished.connect(self._send_thread.quit)
 
         self._send_thread.start()
+
+    def closeEvent(self, e):
+        try:
+            if self._thread and self._thread.isRunning():
+                self._thread.quit()
+                self._thread.wait(300)
+            if self._send_thread and self._send_thread.isRunning():
+                self._send_thread.quit()
+                self._send_thread.wait(300)
+        except Exception:
+            pass
+        super().closeEvent(e)
 
     def _on_progress(self, sent: int, total: int, filename: str):
         if total > 0:

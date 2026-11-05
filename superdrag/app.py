@@ -357,8 +357,14 @@ class SuperDragApp(QObject):
                     actions.share_airdrop(paths)
                     self.toasts.info("AirDrop", f"{len(paths)} item(s) shared")
                 else:
-                    from .localsend_ui import LocalSendWindow
-                    self.open_window(LocalSendWindow(paths, self.toasts.info, self.toasts.error))
+                    try:
+                        from .localsend_ui import LocalSendWindow
+                        self.open_window(LocalSendWindow(paths, self.toasts.info, self.toasts.error))
+                    except Exception as e:
+                        import traceback
+                        traceback.print_exc()
+                        self.toasts.error("LocalSend", f"Failed to open window: {e}")
+                        actions.share_localsend(paths)
             elif name == "float":
                 self.get_shelf().add_files(paths)
                 self.toasts.info("Pinned to Shelf", f"{len(paths)} item(s) pinned to Float Shelf")

@@ -202,3 +202,19 @@ def test_localsend_cli_integration(tmp_path: Path, mock_receiver):
     dev = localsend.LocalSendDevice(alias="CLI Receiver", ip=ip, port=port, protocol="http")
     sender = localsend.LocalSendSender(dev)
     assert sender.send([sample_file]) is True
+
+
+def test_localsend_ui_instantiation(tmp_path: Path):
+    """Test LocalSendWindow can be created and displayed without layout or binding crashes."""
+    from PySide6.QtWidgets import QApplication
+    from superdrag.localsend_ui import LocalSendWindow
+
+    app = QApplication.instance() or QApplication(["test"])
+    sample = tmp_path / "share_test.txt"
+    sample.write_text("LocalSend UI Test Content", encoding="utf-8")
+
+    win = LocalSendWindow([str(sample)], auto_scan=False)
+    assert win is not None
+    assert win.table.columnCount() == 3
+    assert len(win.paths) == 1
+    win.close()
