@@ -1,0 +1,35 @@
+menu: mac windows at cursor: Window Server layer=24 1024x24; Dock layer=20 1024x768; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+requestActivate() called for  QWidgetWindow(0x60000146a1c0, name="RadialMenuClassWindow")  which has Qt::WindowDoesNotAcceptFocus set.
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; universalAccessAuthWarn layer=0 461x177; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; universalAccessAuthWarn layer=0 461x177; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; universalAccessAuthWarn layer=0 461x177; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+IOServiceMatchingfailed for: AppleM2ScalerParavirtDriver
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; universalAccessAuthWarn layer=0 461x177; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 2 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; universalAccessAuthWarn layer=0 461x177; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; universalAccessAuthWarn layer=0 461x177; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard
+menu: mac windows at cursor: Finder layer=500 1024x768; Dock layer=20 1024x768; universalAccessAuthWarn layer=0 461x177; Finder layer=-2147483603 1024x768; Dock layer=-2147483624 1024x768; Window Server layer=-2147483626 1024x768
+menu: 1 file(s) from the drag pasteboard

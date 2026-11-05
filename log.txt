@@ -1,0 +1,95 @@
+[   0.02] macOS 15.8.2 screen (1024, 768)
+[  14.93] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[  15.33] measured blob offset (not applied): -2 -26
+[  28.51] PASS JPG → PNG                       11.0s  D-Photo.png · 2400×1600
+[  30.51] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[  39.71] PASS JPG → WEBP                       8.7s  D-Photo.webp · 2400×1600
+[  41.75] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[  52.79] PASS JPG → HEIC                      10.5s  D-Photo.heic · 2400×1600
+[  54.76] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[  64.64] PASS JPG → PDF                        9.4s  D-Photo.pdf · 1 page(s)
+[  66.64] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[  76.40] PASS PNG → JPG                        9.2s  D-Graphic.jpg · 800×533
+[  78.30] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[  88.86] PASS PDF → JPG (3 pages)             10.0s  3 × .jpg
+[  90.52] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[ 100.34] PASS PDF → TXT                        9.3s  D-Report.txt
+[ 102.08] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[ 111.75] PASS DOCX → PDF                       9.2s  D-Letter.pdf · 1 page(s)
+[ 113.82] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[ 126.88] Traceback (most recent call last):
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_mac.py", line 293, in run
+    msg = verify(outs, srcs) or ", ".join(o.name for o in outs[:3])
+          ^^^^^^^^^^^^^^^^^^
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_windows.py", line 432, in v
+    assert len(pdfs) == n, f"{len(pdfs)} PDFs"
+           ^^^^^^^^^^^^^^
+AssertionError: 0 PDFs
+
+[ 127.05] FAIL PDF Split                       12.7s  AssertionError: 0 PDFs
+[ 129.67] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[ 140.55] Traceback (most recent call last):
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_mac.py", line 293, in run
+    msg = verify(outs, srcs) or ", ".join(o.name for o in outs[:3])
+          ^^^^^^^^^^^^^^^^^^
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_windows.py", line 447, in v_rotated
+    assert all(p.rotation == 90 for p in d)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+[ 140.75] FAIL PDF Rotate                      10.5s  AssertionError: 
+[ 142.90] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[ 153.93] PASS PDF Compress                    10.5s  227 KB → 232 KB
+[ 156.11] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[ 170.58] Traceback (most recent call last):
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_mac.py", line 293, in run
+    msg = verify(outs, srcs) or ", ".join(o.name for o in outs[:3])
+          ^^^^^^^^^^^^^^^^^^
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_windows.py", line 440, in v_merged
+    assert got == total, f"{got} pages, expected {total}"
+           ^^^^^^^^^^^^
+AssertionError: 1 pages, expected 5
+
+[ 170.69] FAIL Merge 2 PDFs                    14.0s  AssertionError: 1 pages, expected 5
+[ 172.52] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[ 185.18] Traceback (most recent call last):
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_mac.py", line 293, in run
+    msg = verify(outs, srcs) or ", ".join(o.name for o in outs[:3])
+          ^^^^^^^^^^^^^^^^^^
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_mac.py", line 330, in v_smaller
+    assert s1 < s0
+           ^^^^^^^
+AssertionError
+
+[ 185.26] FAIL Compress (window, Enter)        12.2s  AssertionError: 
+[ 187.02] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[ 199.94] Traceback (most recent call last):
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_mac.py", line 293, in run
+    msg = verify(outs, srcs) or ", ".join(o.name for o in outs[:3])
+          ^^^^^^^^^^^^^^^^^^
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_mac.py", line 322, in v
+    assert fn(sa, sb), f"{sa} → {sb}"
+           ^^^^^^^^^^
+AssertionError: (2400, 1600) → (2400, 1600)
+
+[ 200.05] FAIL Resize 50% (window, Enter)      12.5s  AssertionError: (2400, 1600) → (2400, 1600)
+[ 202.00] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[ 215.07] Traceback (most recent call last):
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_mac.py", line 293, in run
+    msg = verify(outs, srcs) or ", ".join(o.name for o in outs[:3])
+          ^^^^^^^^^^^^^^^^^^
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_mac.py", line 321, in v
+    sb = img_ok(outs[0])
+         ^^^^^^^^^^^^^^^
+  File "/Users/runner/work/SuperDrag/SuperDrag/demo/e2e_windows.py", line 140, in img_ok
+    with Image.open(p) as im:
+         ^^^^^^^^^^^^^
+  File "/Library/Frameworks/Python.framework/Versions/3.12/lib/python3.12/site-packages/PIL/Image.py", line 3730, in open
+    raise UnidentifiedImageError(msg)
+PIL.UnidentifiedImageError: cannot identify image file '/Users/runner/SuperDragTest/D-Graphic.pdf'
+
+[ 215.19] FAIL Add BG (window, Enter)          12.7s  UnidentifiedImageError: cannot identify image file '/Users/runner/SuperDragTest/D-Graphic.pdf'
+[ 217.08] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[ 230.22] PASS Metadata: remove all (Enter)    12.6s  0 metadata fields left
+[ 232.02] icon positions (screen): {'D-Photo.jpg': (140, 148), 'D-Report.pdf': (140, 263), 'D-Appendix.pdf': (140, 378), 'D-Letter.docx': (140, 493), 'D-Graphic.png': (140, 608)}
+[ 233.04] DONE 11/17

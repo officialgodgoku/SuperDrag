@@ -1,0 +1,121 @@
+[
+ {
+  "name": "JPG \u2192 PNG",
+  "where": "mac desktop",
+  "status": "PASS",
+  "detail": "D-Photo.png \u00b7 2400\u00d71600",
+  "seconds": 11.0
+ },
+ {
+  "name": "JPG \u2192 WEBP",
+  "where": "mac desktop",
+  "status": "PASS",
+  "detail": "D-Photo.webp \u00b7 2400\u00d71600",
+  "seconds": 8.7
+ },
+ {
+  "name": "JPG \u2192 HEIC",
+  "where": "mac desktop",
+  "status": "PASS",
+  "detail": "D-Photo.heic \u00b7 2400\u00d71600",
+  "seconds": 10.5
+ },
+ {
+  "name": "JPG \u2192 PDF",
+  "where": "mac desktop",
+  "status": "PASS",
+  "detail": "D-Photo.pdf \u00b7 1 page(s)",
+  "seconds": 9.4
+ },
+ {
+  "name": "PNG \u2192 JPG",
+  "where": "mac desktop",
+  "status": "PASS",
+  "detail": "D-Graphic.jpg \u00b7 800\u00d7533",
+  "seconds": 9.2
+ },
+ {
+  "name": "PDF \u2192 JPG (3 pages)",
+  "where": "mac desktop",
+  "status": "PASS",
+  "detail": "3 \u00d7 .jpg",
+  "seconds": 10.0
+ },
+ {
+  "name": "PDF \u2192 TXT",
+  "where": "mac desktop",
+  "status": "PASS",
+  "detail": "D-Report.txt",
+  "seconds": 9.3
+ },
+ {
+  "name": "DOCX \u2192 PDF",
+  "where": "mac desktop",
+  "status": "PASS",
+  "detail": "D-Letter.pdf \u00b7 1 page(s)",
+  "seconds": 9.2
+ },
+ {
+  "name": "PDF Split",
+  "where": "mac desktop",
+  "status": "FAIL",
+  "detail": "AssertionError: 0 PDFs",
+  "seconds": 12.7
+ },
+ {
+  "name": "PDF Rotate",
+  "where": "mac desktop",
+  "status": "FAIL",
+  "detail": "AssertionError: ",
+  "seconds": 10.5
+ },
+ {
+  "name": "PDF Compress",
+  "where": "mac desktop",
+  "status": "PASS",
+  "detail": "227 KB \u2192 232 KB",
+  "seconds": 10.5
+ },
+ {
+  "name": "Merge 2 PDFs",
+  "where": "mac desktop",
+  "status": "FAIL",
+  "detail": "AssertionError: 1 pages, expected 5",
+  "seconds": 14.0
+ },
+ {
+  "name": "Compress (window, Enter)",
+  "where": "mac desktop",
+  "status": "FAIL",
+  "detail": "AssertionError: ",
+  "seconds": 12.2
+ },
+ {
+  "name": "Resize 50% (window, Enter)",
+  "where": "mac desktop",
+  "status": "FAIL",
+  "detail": "AssertionError: (2400, 1600) \u2192 (2400, 1600)",
+  "seconds": 12.5
+ },
+ {
+  "name": "Add BG (window, Enter)",
+  "where": "mac desktop",
+  "status": "FAIL",
+  "detail": "UnidentifiedImageError: cannot identify image file '/Users/runner/SuperDragTest/D-Graphic.pdf'",
+  "seconds": 12.7
+ },
+ {
+  "name": "Metadata: remove all (Enter)",
+  "where": "mac desktop",
+  "status": "PASS",
+  "detail": "0 metadata fields left",
+  "seconds": 12.6
+ },
+ {
+  "name": "Slices filled before the mouse moves",
+  "where": "mac desktop",
+  "status": "PASS",
+  "detail": "files read from the drag pasteboard",
+  "seconds": 0
+ }
+]
