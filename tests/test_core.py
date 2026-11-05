@@ -4,8 +4,8 @@ from pathlib import Path
 import pytest
 from PIL import Image, ImageDraw
 
-from dragshift import convert, imaging
-from dragshift.util import category, sibling
+from superdrag import convert, imaging
+from superdrag.util import category, sibling
 
 
 @pytest.fixture
@@ -13,7 +13,7 @@ def img(tmp_path) -> Path:
     im = Image.new("RGBA", (640, 420), (255, 255, 255, 0))
     d = ImageDraw.Draw(im)
     d.rectangle((40, 40, 600, 380), fill=(255, 120, 80, 255))
-    d.text((60, 60), "DragShift test", fill=(0, 0, 0, 255))
+    d.text((60, 60), "SuperDrag test", fill=(0, 0, 0, 255))
     p = tmp_path / "Page 001.png"
     exif = Image.Exif()
     exif[0x010F] = "TestCam"  # Make
@@ -107,7 +107,7 @@ def test_paths(tmp_path):
 @pytest.mark.skipif(__import__("sys").platform != "win32", reason="Windows shortcuts")
 def test_shortcut_resolves_to_target(img, tmp_path):
     import win32com.client
-    from dragshift.util import resolve_shortcuts
+    from superdrag.util import resolve_shortcuts
     lnk = tmp_path / "pic.lnk"
     sc = win32com.client.Dispatch("WScript.Shell").CreateShortcut(str(lnk))
     sc.TargetPath = str(img)

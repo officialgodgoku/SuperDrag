@@ -24,7 +24,7 @@ DRAG_THRESHOLD = 10   # px the mouse must travel with the button held
 NO_DRAG_TIMEOUT = 50  # ticks (≈ 0.75 s) to wait for a file drag to enter before hiding
 
 
-class DragShiftWatcher(QObject):
+class SuperDragWatcher(QObject):
     show_menu = Signal(QPoint, str)  # pos, target_ring ("Convert" or "Actions")
     toggle_ring = Signal()
     switch_ring = Signal(str)        # ring name ("Convert", "Tools", "Actions")
@@ -129,4 +129,4 @@ class DragShiftWatcher(QObject):
         self._alt_was = alt
 
 
-SuperDragWatcher = DragShiftWatcher
+DragShiftWatcher = SuperDragWatcher

@@ -3,7 +3,7 @@ like many Debian/XFCE machines) + the Thunar file manager.
 
 xdotool drives real XTest mouse/keyboard input: drag a file out of a Thunar window, press Shift,
 drop on a slice (press Enter in tool windows = their main button), then every output is verified.
-Runs against the *installed* .deb (`dragshift` on PATH) unless DRAGSHIFT_CMD is set.
+Runs against the *installed* .deb (`superdrag` on PATH) unless SUPERDRAG_CMD is set.
 Writes e2e_linux_out/: results.md / results.json, log.txt, screenshots, app_log.txt, video."""
 from __future__ import annotations
 
@@ -27,26 +27,26 @@ sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(ROOT / "demo"))
 # the shared sample-file makers and verifiers live in e2e_windows; stub its Windows-only imports
 _wk = types.ModuleType("winkit")
-_wk.ROOT = Path("/tmp/dragshift_e2e_unused")
+_wk.ROOT = Path("/tmp/superdrag_e2e_unused")
 _wk.ROOT.mkdir(parents=True, exist_ok=True)
 (_wk.ROOT / "e2e_out" / "shots").mkdir(parents=True, exist_ok=True)
-_wk.desktop_dir = lambda: Path("/tmp/dragshift_e2e_unused")
+_wk.desktop_dir = lambda: Path("/tmp/superdrag_e2e_unused")
 sys.modules.setdefault("winkit", _wk)
 sys.modules.setdefault("pyautogui", types.ModuleType("pyautogui"))
-import dragshift.convert  # noqa: E402,F401  (HEIC support for verifiers)
+import superdrag.convert  # noqa: E402,F401  (HEIC support for verifiers)
 from e2e_windows import (make_files, img_ok, v_format, v_pages_to_images,  # noqa: E402
                          v_pdf_n, v_rotated, v_pdf_compress, v_merged, v_protected)
 
 OUT = ROOT / "e2e_linux_out"
 (OUT / "shots").mkdir(parents=True, exist_ok=True)
-BASE = Path.home() / "DragShiftTest"
+BASE = Path.home() / "SuperDragTest"
 LOGF = open(OUT / "log.txt", "w", encoding="utf-8")
 RESULTS: list[dict] = []
 T0 = time.time()
 R_PETAL = 109
 WIN = (40, 40, 600, 540)           # Thunar window x, y, w, h
-_default_cmd = "superdrag" if shutil.which("superdrag") else "dragshift"
-CMD = shlex.split(os.environ.get("DRAGSHIFT_CMD", _default_cmd))
+_default_cmd = "superdrag" if shutil.which("superdrag") else "superdrag"
+CMD = shlex.split(os.environ.get("SUPERDRAG_CMD", _default_cmd))
 
 
 def log(*a):
@@ -166,8 +166,8 @@ def find_icons(empty: Image.Image, full: Image.Image, n: int) -> list[tuple[int,
 
 # ------------------------------------------------------------------ scenario
 def ring_index(paths, ring, label):
-    from dragshift.app import DragShiftApp
-    rings = DragShiftApp.build_rings(None, paths)
+    from superdrag.app import SuperDragApp
+    rings = SuperDragApp.build_rings(None, paths)
     items = rings[ring]
     return list(rings).index(ring), [i.label for i in items].index(label), len(items)
 
@@ -295,14 +295,14 @@ def v_smaller(outs, srcs):
 
 
 def v_no_meta(outs, srcs):
-    from dragshift import imaging
+    from superdrag import imaging
     n, gps = imaging.count_metadata(outs[0])
     assert n == 0 and not gps, f"{n} fields remain"
     return "0 metadata fields left"
 
 
 def open_with_test():
-    """Right-click → Open With DragShift: the app is launched with the file as an argument."""
+    """Right-click → Open With SuperDrag: the app is launched with the file as an argument."""
     k = len(RESULTS) + 1
     folder = BASE / f"{k:02d}"
     folder.mkdir(parents=True, exist_ok=True)
@@ -340,11 +340,11 @@ def main():
     shutil.rmtree(BASE, ignore_errors=True)
     BASE.mkdir(parents=True, exist_ok=True)
     make_files(BASE / "src", "D-")
-    for app_name in ("SuperDrag", "DragShift"):
+    for app_name in ("SuperDrag", "SuperDrag"):
         cfg = Path.home() / ".config" / app_name
         cfg.mkdir(parents=True, exist_ok=True)
         (cfg / f"{app_name}.conf").write_text("[General]\nwelcomed=true\n")
-    env = dict(os.environ, DRAGSHIFT_RECORDING="1")
+    env = dict(os.environ, SUPERDRAG_RECORDING="1")
     applog = open(OUT / "app_log.txt", "w")
     app = subprocess.Popen(CMD + ["--quiet"], env=env, stdout=applog, stderr=subprocess.STDOUT)
     time.sleep(5)
@@ -393,7 +393,7 @@ def main():
         app.terminate()
         passed = sum(r["status"] == "PASS" for r in RESULTS)
         (OUT / "results.json").write_text(json.dumps(RESULTS, indent=1))
-        lines = [f"# DragShift Debian/XFCE end-to-end — {passed}/{len(RESULTS)} passed", "",
+        lines = [f"# SuperDrag Debian/XFCE end-to-end — {passed}/{len(RESULTS)} passed", "",
                  "Xvfb + xfwm4 (compositor off) + Thunar, driving the installed .deb.", "",
                  "| # | Scenario | Result | Detail | Time |", "|---|---|---|---|---|"]
         for i, r in enumerate(RESULTS, 1):

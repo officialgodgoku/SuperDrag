@@ -59,13 +59,13 @@ Thank you for your interest in contributing to SuperDrag! Whether you're fixing 
 ## Code Architecture
 
 - **`run.py`**: Fast IPC hand-off and application launcher.
-- **`dragshift/app.py`**: Main application logic, tray icon management, IPC server, window coordinator.
-- **`dragshift/radial.py`**: 3D Liquid-Glass radial wheel, spring physics, and typography.
-- **`dragshift/liquid.py`**: Chromatic dispersion, signed distance fields (SDF), and glass refraction.
-- **`dragshift/trigger.py`**: Low-level mouse drag and modifier key detection (<kbd>Shift</kbd>, <kbd>Ctrl</kbd>, <kbd>Alt</kbd>).
-- **`dragshift/convert.py`**: Central conversion dispatch for images, documents, audio, and archives.
-- **`dragshift/video.py`**: FFmpeg video compression, GPU hardware acceleration (Intel QuickSync, NVIDIA NVENC, AMD AMF), and CPU fallbacks.
-- **`dragshift/settings.py`**: Persistent settings, Settings window, Welcome window, and Hub window.
+- **`superdrag/app.py`**: Main application logic, tray icon management, IPC server, window coordinator.
+- **`superdrag/radial.py`**: 3D Liquid-Glass radial wheel, spring physics, and typography.
+- **`superdrag/liquid.py`**: Chromatic dispersion, signed distance fields (SDF), and glass refraction.
+- **`superdrag/trigger.py`**: Low-level mouse drag and modifier key detection (<kbd>Shift</kbd>, <kbd>Ctrl</kbd>, <kbd>Alt</kbd>).
+- **`superdrag/convert.py`**: Central conversion dispatch for images, documents, audio, and archives.
+- **`superdrag/video.py`**: FFmpeg video compression, GPU hardware acceleration (Intel QuickSync, NVIDIA NVENC, AMD AMF), and CPU fallbacks.
+- **`superdrag/settings.py`**: Persistent settings, Settings window, Welcome window, and Hub window.
 
 ---
 

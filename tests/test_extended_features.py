@@ -15,7 +15,7 @@ from pathlib import Path
 import pytest
 from PIL import Image, ImageDraw
 
-from dragshift import cli, convert, data, fetcher, fonts, imaging, subtitles, util
+from superdrag import cli, convert, data, fetcher, fonts, imaging, subtitles, util
 
 
 def test_data_conversions(tmp_path: Path):

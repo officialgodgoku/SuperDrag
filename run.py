@@ -1,8 +1,8 @@
 """Entry point for PyInstaller and for `python run.py`."""
 import sys
 
-from dragshift.cli import run_cli
-from dragshift.handoff import try_handoff
+from superdrag.cli import run_cli
+from superdrag.handoff import try_handoff
 
 if __name__ == "__main__":
     cli_code = run_cli(sys.argv)
@@ -10,5 +10,5 @@ if __name__ == "__main__":
         sys.exit(cli_code)
     if try_handoff(sys.argv):
         sys.exit(0)
-    from dragshift.app import main
+    from superdrag.app import main
     sys.exit(main())

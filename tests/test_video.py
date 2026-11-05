@@ -3,8 +3,8 @@ from pathlib import Path
 import pytest
 from PIL import Image
 
-from dragshift import convert, video
-from dragshift.util import category
+from superdrag import convert, video
+from superdrag.util import category
 
 
 @pytest.fixture(scope="session")

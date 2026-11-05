@@ -17,28 +17,14 @@ TMP="$(mktemp -d)"
 trap 'hdiutil detach "$TMP/mnt" -quiet 2>/dev/null || true; rm -rf "$TMP"' EXIT
 
 echo "→ Downloading $ASSET"
-if ! curl -fL --progress-bar "$URL" -o "$TMP/SuperDrag.dmg"; then
-  # Fallback to legacy name if needed
-  case "$(uname -m)" in
-    arm64) ASSET="DragShift-mac-apple-silicon.dmg" ;;
-    *)     ASSET="DragShift-mac-intel.dmg" ;;
-  esac
-  URL="https://github.com/$REPO/releases/latest/download/$ASSET"
-  curl -fL --progress-bar "$URL" -o "$TMP/SuperDrag.dmg"
-fi
+curl -fL --progress-bar "$URL" -o "$TMP/SuperDrag.dmg"
 
 echo "→ Installing to /Applications"
 hdiutil attach "$TMP/SuperDrag.dmg" -mountpoint "$TMP/mnt" -nobrowse -quiet
 osascript -e 'quit app "SuperDrag"' 2>/dev/null || true
 pkill -x SuperDrag 2>/dev/null || true
-osascript -e 'quit app "DragShift"' 2>/dev/null || true
-pkill -x DragShift 2>/dev/null || true
 
 SRC_APP="$TMP/mnt/SuperDrag.app"
-if [ ! -d "$SRC_APP" ]; then
-  SRC_APP="$TMP/mnt/DragShift.app"
-fi
-
 DEST="/Applications/SuperDrag.app"
 if [ -w /Applications ]; then
   rm -rf "$DEST"; ditto "$SRC_APP" "$DEST"

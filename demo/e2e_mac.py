@@ -21,13 +21,13 @@ from PIL import Image, ImageChops, ImageDraw
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
-import dragshift.convert  # noqa: E402,F401  (HEIC support for verifiers)
+import superdrag.convert  # noqa: E402,F401  (HEIC support for verifiers)
 from e2e_windows import (make_files, img_ok, pdf_pages, v_format, v_pages_to_images,  # noqa: E402
                          v_combined, v_pdf_n, v_rotated, v_pdf_compress, v_merged)
 
 OUT = ROOT / "e2e_mac_out"
 (OUT / "shots").mkdir(parents=True, exist_ok=True)
-DESK = Path.home() / "DragShiftTest"   # a Finder window on this folder
+DESK = Path.home() / "SuperDragTest"   # a Finder window on this folder
 LOGF = open(OUT / "log.txt", "w", encoding="utf-8")
 RESULTS: list[dict] = []
 T0 = time.time()
@@ -196,8 +196,8 @@ def calibrate(pos: dict, empty: Image.Image, full: Image.Image):
 
 # ------------------------------------------------------------------ scenario
 def ring_index(paths, ring, label):
-    from dragshift.app import DragShiftApp
-    rings = DragShiftApp.build_rings(None, paths)
+    from superdrag.app import SuperDragApp
+    rings = SuperDragApp.build_rings(None, paths)
     items = rings[ring]
     return list(rings).index(ring), [i.label for i in items].index(label), len(items)
 
@@ -332,7 +332,7 @@ def v_smaller(outs, srcs):
 
 
 def v_no_meta(outs, srcs):
-    from dragshift import imaging
+    from superdrag import imaging
     n, gps = imaging.count_metadata(outs[0])
     assert n == 0 and not gps, f"{n} fields remain"
     return "0 metadata fields left"
@@ -355,15 +355,15 @@ def main():
         if p.name not in SOURCES:
             p.unlink()
     # wallpaper like the Windows runs
-    from dragshift.imaging import gradient
-    wall = Path("/tmp/dragshift_wall.png")
+    from superdrag.imaging import gradient
+    wall = Path("/tmp/superdrag_wall.png")
     gradient((1920, 1080), ["#ffb36b", "#ff5f6d", "#c2508f", "#7b8cff"], 160).save(wall)
     osa(f'tell application "System Events" to tell every desktop to set picture to "{wall}"')
     osa('tell application "System Events" to set visible of every process whose name is not "Finder" to false')
-    sh(["defaults", "write", "com.dragshift.DragShift", "welcomed", "-bool", "true"])
-    sh(["defaults", "write", "DragShift", "welcomed", "-string", "true"])
-    env = dict(os.environ, DRAGSHIFT_RECORDING="1")
-    app = subprocess.Popen([sys.executable, "-u", "-m", "dragshift", "--quiet"], cwd=str(ROOT), env=env,
+    sh(["defaults", "write", "com.superdrag.SuperDrag", "welcomed", "-bool", "true"])
+    sh(["defaults", "write", "SuperDrag", "welcomed", "-string", "true"])
+    env = dict(os.environ, SUPERDRAG_RECORDING="1")
+    app = subprocess.Popen([sys.executable, "-u", "-m", "superdrag", "--quiet"], cwd=str(ROOT), env=env,
                            stdout=open(OUT / "app_stdout.txt", "w"), stderr=subprocess.STDOUT)
     time.sleep(6)
     POS = arrange(SOURCES)
@@ -419,7 +419,7 @@ def main():
             except Exception:
                 rec.send_signal(signal.SIGINT)
         app.terminate()
-        logp = Path.home() / "Library" / "Logs" / "DragShift" / "log.txt"
+        logp = Path.home() / "Library" / "Logs" / "SuperDrag" / "log.txt"
         if logp.exists():
             shutil.copy(logp, OUT / "app_log.txt")
         if True:
@@ -432,7 +432,7 @@ def main():
                             "seconds": 0})
         passed = sum(r["status"] == "PASS" for r in RESULTS)
         (OUT / "results.json").write_text(json.dumps(RESULTS, indent=1))
-        lines = [f"# DragShift macOS end-to-end — {passed}/{len(RESULTS)} passed", "",
+        lines = [f"# SuperDrag macOS end-to-end — {passed}/{len(RESULTS)} passed", "",
                  "| # | Scenario | Result | Detail | Time |", "|---|---|---|---|---|"]
         for i, r in enumerate(RESULTS, 1):
             lines.append(f"| {i} | {r['name']} | {'✅' if r['status'] == 'PASS' else '❌'} | {r['detail']} | {r['seconds']}s |")

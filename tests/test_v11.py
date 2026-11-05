@@ -5,8 +5,8 @@ from pathlib import Path
 import pytest
 from PIL import Image, ImageDraw
 
-from dragshift import convert, imaging, liquid, report
-from dragshift.util import CONFIG, UserError
+from superdrag import convert, imaging, liquid, report
+from superdrag.util import CONFIG, UserError
 
 
 def photo(tmp_path, name="Photo.jpg", size=(2400, 1600), gps=True) -> Path:

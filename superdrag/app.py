@@ -18,7 +18,7 @@ from . import __version__, convert, glass, imaging, report, tools
 from .radial import Item, RadialMenu
 from .settings import AboutWindow, HubWindow, Settings, SettingsWindow, WelcomeWindow, TRIGGERS
 from .toasts import ToastStack
-from .trigger import DragShiftWatcher, DragShiftWatcher as SuperDragWatcher
+from .trigger import SuperDragWatcher, SuperDragWatcher as DragShiftWatcher
 from .util import UserError, category, file_size, human_size, keep, release
 
 APP_NAME = "SuperDrag"
@@ -171,7 +171,7 @@ def make_tray_icon() -> QIcon:
 
 
 def make_icon() -> QIcon:
-    for name in ("superdrag.ico", "dragshift.ico"):
+    for name in ("superdrag.ico",):
         ico = Path(__file__).with_name("assets") / name
         if ico.exists():
             return QIcon(str(ico))

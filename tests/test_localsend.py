@@ -15,7 +15,7 @@ from pathlib import Path
 
 import pytest
 
-from dragshift import cli, localsend
+from superdrag import cli, localsend
 
 
 class MockLocalSendServer(http.server.BaseHTTPRequestHandler):

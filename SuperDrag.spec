@@ -20,7 +20,7 @@ except Exception:
 
 a = Analysis(
     ["run.py"],
-    datas=[("dragshift/assets", "dragshift/assets")] + heif_datas + ffmpeg_datas,
+    datas=[("superdrag/assets", "superdrag/assets")] + heif_datas + ffmpeg_datas,
     binaries=heif_bins + ffmpeg_bins + onnx_bins,
     hiddenimports=["win32com.client", "PySide6.QtNetwork", "AppKit", "Quartz", "objc", "imageio_ffmpeg"] + heif_hidden + ffmpeg_hidden + onnx_hidden,
     excludes=["tkinter", "PySide6.QtWebEngineCore", "PySide6.QtWebEngineWidgets", "PySide6.QtQml",
@@ -45,11 +45,11 @@ IS_MAC = sys.platform == "darwin"
 common = dict(name="SuperDrag", console=False, upx=False)
 IS_LINUX = sys.platform.startswith("linux")
 if IS_MAC:
-    common.update(icon="dragshift/assets/superdrag.icns")
+    common.update(icon="superdrag/assets/superdrag.icns")
 elif IS_LINUX:
     common.update(name="superdrag")       # icon comes from the .desktop file / hicolor theme
 else:
-    common.update(icon="dragshift/assets/superdrag.ico", version="installer/version_info.txt")
+    common.update(icon="superdrag/assets/superdrag.ico", version="installer/version_info.txt")
 
 if IS_MAC:
     exe = EXE(pyz, a.scripts, [], exclude_binaries=True, argv_emulation=False, **common)
@@ -57,12 +57,12 @@ if IS_MAC:
     app = BUNDLE(
         coll,
         name="SuperDrag.app",
-        icon="dragshift/assets/superdrag.icns",
+        icon="superdrag/assets/superdrag.icns",
         bundle_identifier="com.superdrag.app",
         info_plist={
             "CFBundleName": "SuperDrag",
             "CFBundleDisplayName": "SuperDrag",
-            "CFBundleShortVersionString": "1.1.0",
+            "CFBundleShortVersionString": "1.2.0",
             "CFBundleVersion": "1.1.0",
             "LSUIElement": True,                 # menu-bar app, no Dock icon
             "LSMinimumSystemVersion": "11.0",

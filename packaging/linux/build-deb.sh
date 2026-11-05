@@ -12,27 +12,20 @@ mkdir -p "$PKG/DEBIAN" "$PKG/opt" "$PKG/usr/bin" "$PKG/usr/share/applications" \
 
 SRC_DIR="$ROOT/dist/superdrag"
 BIN_NAME="superdrag"
-if [ ! -d "$SRC_DIR" ] && [ -d "$ROOT/dist/dragshift" ]; then
-  SRC_DIR="$ROOT/dist/dragshift"
-  BIN_NAME="dragshift"
-elif [ ! -d "$SRC_DIR" ] && [ -d "$ROOT/dist/SuperDrag" ]; then
+if [ ! -d "$SRC_DIR" ] && [ -d "$ROOT/dist/SuperDrag" ]; then
   SRC_DIR="$ROOT/dist/SuperDrag"
   BIN_NAME="SuperDrag"
 fi
 
 cp -a "$SRC_DIR" "$PKG/opt/superdrag"
 ln -s /opt/superdrag/"$BIN_NAME" "$PKG/usr/bin/superdrag"
-ln -s /opt/superdrag/"$BIN_NAME" "$PKG/usr/bin/dragshift" 2>/dev/null || true
-install -m644 "$ROOT/packaging/linux/dragshift.desktop" "$PKG/usr/share/applications/"
 if [ -f "$ROOT/packaging/linux/superdrag.desktop" ]; then
   install -m644 "$ROOT/packaging/linux/superdrag.desktop" "$PKG/usr/share/applications/"
 fi
 for s in 16 24 32 48 64 128 256 512; do
   d="$PKG/usr/share/icons/hicolor/${s}x${s}/apps"; mkdir -p "$d"
-  ICON_SRC="$ROOT/dragshift/assets/superdrag.png"
-  if [ ! -f "$ICON_SRC" ]; then ICON_SRC="$ROOT/dragshift/assets/dragshift.png"; fi
+  ICON_SRC="$ROOT/superdrag/assets/superdrag.png"
   python3 -c "from PIL import Image; Image.open('$ICON_SRC').resize(($s,$s), Image.LANCZOS).save('$d/superdrag.png')"
-  cp "$d/superdrag.png" "$d/dragshift.png"
 done
 install -m644 "$ROOT/LICENSE" "$PKG/usr/share/doc/superdrag/copyright"
 SIZE=$(du -sk "$PKG" | cut -f1)
@@ -65,5 +58,4 @@ cp "$PKG/DEBIAN/postinst" "$PKG/DEBIAN/postrm"
 chmod 755 "$PKG/DEBIAN/postinst" "$PKG/DEBIAN/postrm"
 mkdir -p "$ROOT/dist"
 dpkg-deb --build --root-owner-group "$PKG" "$ROOT/dist/SuperDrag-linux-${ARCH}.deb"
-cp "$ROOT/dist/SuperDrag-linux-${ARCH}.deb" "$ROOT/dist/DragShift-linux-${ARCH}.deb"
 ls -la "$ROOT/dist/"*.deb

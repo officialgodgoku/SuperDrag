@@ -9,7 +9,7 @@ from pathlib import Path
 def asset_path(name: str) -> Path:
     """Resolve an asset file path, working in both source and PyInstaller environments."""
     base = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent.parent))
-    cand = base / "dragshift" / "assets" / name
+    cand = base / "superdrag" / "assets" / name
     if cand.exists():
         return cand
     cand2 = Path(__file__).resolve().parent / "assets" / name

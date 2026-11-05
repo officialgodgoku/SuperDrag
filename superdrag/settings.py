@@ -58,7 +58,7 @@ class Settings:
 def launch_command() -> str:
     if getattr(sys, "frozen", False):
         return f'"{sys.executable}" --quiet'
-    return f'"{sys.executable}" -m dragshift --quiet'
+    return f'"{sys.executable}" -m superdrag --quiet'
 
 
 def autostart_enabled() -> bool:

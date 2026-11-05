@@ -4,8 +4,8 @@ import tempfile
 from pathlib import Path
 import pytest
 
-from dragshift import archive, audio, convert, sheets, subtitles, util, video
-from dragshift.actions import copy_paths, copy_files
+from superdrag import archive, audio, convert, sheets, subtitles, util, video
+from superdrag.actions import copy_paths, copy_files
 
 
 @pytest.fixture
@@ -135,7 +135,7 @@ def test_file_categories():
 
 
 def test_build_rings_actions_and_tools():
-    from dragshift.app import SuperDragApp, Item
+    from superdrag.app import SuperDragApp, Item
     from PySide6.QtWidgets import QApplication
     import sys
 
@@ -179,7 +179,7 @@ def test_build_rings_actions_and_tools():
 
 def test_remove_background_feature(temp_dir):
     from PIL import Image, ImageDraw
-    from dragshift import imaging
+    from superdrag import imaging
 
     # 1. Create a synthetic test image with a white background and red subject
     img = Image.new("RGB", (240, 240), (255, 255, 255))
@@ -213,7 +213,7 @@ def test_remove_background_feature(temp_dir):
 
     # 5. Test RemoveBgWindow
     from PySide6.QtWidgets import QApplication
-    from dragshift import tools
+    from superdrag import tools
     import sys
 
     app = QApplication.instance() or QApplication(sys.argv)
