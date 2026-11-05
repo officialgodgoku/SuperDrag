@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/officialgodgoku/SuperDrag/releases/latest"><img src="https://img.shields.io/badge/version-1.1.0-blue.svg?style=flat-square" alt="Version 1.1.0"></a>
+  <a href="https://github.com/officialgodgoku/SuperDrag/releases/latest"><img src="https://img.shields.io/badge/version-1.2.0-blue.svg?style=flat-square" alt="Version 1.2.0"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License MIT"></a>
   <a href="https://www.python.org"><img src="https://img.shields.io/badge/python-3.11+-3776AB.svg?style=flat-square&logo=python&logoColor=white" alt="Python 3.11+"></a>
   <a href="https://buymeacoffee.com/officialgodgoku"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"></a>
@@ -134,7 +134,14 @@ SuperDrag is built as an all-in-one offline desktop productivity powerhouse. Bel
 | **🎬 Video Processing** | GPU hardware-accelerated video encoding (NVIDIA NVENC, Intel QuickSync QSV, AMD AMF, Apple VideoToolbox), preset rate control (`ultrafast` to `veryslow`), audio track extraction, video container transcode | `MP4`, `WEBM`, `MOV`, `MKV`, `extract mp3 from video`, `video compressor`, `hardware accelerated converter`, `nvenc encoder`, `offline video converter` |
 | **🎵 Audio Utilities** | Peak volume normalization, waveform visualizer PNG generator, audio censor bleep tone synthesizer, mono/stereo downmixing, bitrate control | `MP3`, `WAV`, `FLAC`, `M4A`, `audio normalizer`, `waveform generator`, `bleep audio`, `audio converter` |
 | **📦 Archive Utilities** | Fast extraction, archive creation with configurable compression algorithms (Deflate, BZIP2, LZMA ultra, Store) | `ZIP`, `TAR`, `TAR.GZ`, `extract archive`, `zip compressor`, `tar creator` |
-| **⚡ Desktop Productivity** | Fluid liquid-glass radial dial, LocalSend / AirDrop sharing, persistent floating shelf drop zone, copy path, terminal launcher, SuperDrag Hub | `radial menu`, `pie menu`, `drag and drop utility`, `localsend`, `floating shelf`, `offline cloudconvert alternative` |
+| **📡 Native LocalSend Sharing** | Zero-dependency peer-to-peer Wi-Fi discovery & transfer to phones, laptops, and tablets with interactive recipient picker and direct streaming | `localsend`, `airdrop windows`, `wifi file transfer`, `send to phone`, `cross-platform share`, `wireless drop` |
+| **⬡ Vector Tracing (SVG)** | Offline bitmap-to-SVG vectorization with palette quantization, boundary-edge loop chaining, and RDP curve smoothing | `vectorize`, `image to svg`, `bitmap to vector`, `png to svg`, `convert to svg`, `svg trace`, `offline vectorizer` |
+| **📊 Structured Data Suite** | Offline lossless transcoding between configuration, API, and spreadsheet data formats | `json to yaml`, `yaml to json`, `toml to json`, `json to toml`, `xml to json`, `csv to json`, `data converter` |
+| **🔤 Web & Desktop Fonts** | Modern typography conversions between web formats and desktop fonts with Brotli compression | `ttf to woff2`, `woff2 to ttf`, `otf to woff`, `font converter`, `web font generator` |
+| **💬 Advanced Subtitles** | Subtitle format conversion and synchronizer with timestamp time-shifting (+/- seconds) | `srt to vtt`, `vtt to srt`, `srt to ass`, `subtitle sync`, `subtitles to txt`, `time shift subtitles` |
+| **🌐 Web Drag & Drop** | Directly drag images, web URLs, or Data URIs from Chrome, Edge, or Firefox onto SuperDrag | `browser drag and drop`, `web image converter`, `url drop`, `data uri decoder` |
+| **💻 Headless CLI Automation** | Fast terminal scripting via `superdrag convert`, `vectorize`, `info`, `scan`, `send` without opening GUI | `cli converter`, `terminal file converter`, `batch convert cli`, `localsend cli` |
+| **⚡ Desktop Productivity** | Fluid liquid-glass radial dial with underdamped spring physics, persistent floating shelf drop zone, copy path, terminal launcher, SuperDrag Hub | `radial menu`, `pie menu`, `drag and drop utility`, `floating shelf`, `offline cloudconvert alternative` |
 
 ---
 

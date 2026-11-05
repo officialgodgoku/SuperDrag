@@ -670,3 +670,130 @@ def pil_to_png_bytes(im: Image.Image) -> bytes:
     buf = io.BytesIO()
     im.save(buf, "PNG")
     return buf.getvalue()
+
+
+# ---------------------------------------------------------------- Vector Tracing (Bitmap to SVG)
+def ramer_douglas_peucker(points: list[tuple[float, float]], epsilon: float) -> list[tuple[float, float]]:
+    """Ramer-Douglas-Peucker 2D polyline/polygon simplification."""
+    if len(points) < 3:
+        return points
+
+    import math
+    x0, y0 = points[0]
+    x1, y1 = points[-1]
+    dx = x1 - x0
+    dy = y1 - y0
+    line_len = math.hypot(dx, dy)
+
+    dmax = 0.0
+    index = 0
+    for i in range(1, len(points) - 1):
+        px, py = points[i]
+        if line_len == 0:
+            d = math.hypot(px - x0, py - y0)
+        else:
+            d = abs(dy * px - dx * py + x1 * y0 - y1 * x0) / line_len
+        if d > dmax:
+            index = i
+            dmax = d
+
+    if dmax > epsilon:
+        rec1 = ramer_douglas_peucker(points[:index + 1], epsilon)
+        rec2 = ramer_douglas_peucker(points[index:], epsilon)
+        return rec1[:-1] + rec2
+    else:
+        return [points[0], points[-1]]
+
+
+def trace_bitmap_to_svg(src: str | Path, max_colors: int = 16, epsilon: float = 1.0) -> Path:
+    """Trace a raster image into an SVG vector document.
+
+    Quantizes colors, traces boundary edge cycles, simplifies them into smooth
+    polygons via RDP, and renders scalable SVG path elements.
+    """
+    src = Path(src)
+    im = open_image(src)
+    w, h = im.size
+
+    # Limit max dimension for responsive tracing
+    max_side = 800
+    if max(w, h) > max_side:
+        scale = max_side / max(w, h)
+        w, h = max(1, int(w * scale)), max(1, int(h * scale))
+        im = im.resize((w, h), Image.Resampling.LANCZOS)
+
+    # Quantize palette
+    q = im.convert("RGB").quantize(colors=max_colors, method=Image.Quantize.MEDIANCUT)
+    palette = q.getpalette() or []
+    num_colors = min(max_colors, len(palette) // 3)
+    pixels = q.load()
+
+    svg_paths = []
+    for c_idx in range(num_colors):
+        color_hex = f"#{palette[c_idx*3]:02x}{palette[c_idx*3+1]:02x}{palette[c_idx*3+2]:02x}"
+
+        edges = {}
+        for y in range(h):
+            for x in range(w):
+                if pixels[x, y] == c_idx:
+                    if y == 0 or pixels[x, y - 1] != c_idx:
+                        edges[(x, y)] = (x + 1, y)
+                    if x == w - 1 or pixels[x + 1, y] != c_idx:
+                        edges[(x + 1, y)] = (x + 1, y + 1)
+                    if y == h - 1 or pixels[x, y + 1] != c_idx:
+                        edges[(x + 1, y + 1)] = (x, y + 1)
+                    if x == 0 or pixels[x - 1, y] != c_idx:
+                        edges[(x, y + 1)] = (x, y)
+
+        if not edges:
+            continue
+
+        loops = []
+        visited = set()
+        for start_pt in list(edges.keys()):
+            if start_pt in visited:
+                continue
+            loop = [start_pt]
+            curr = start_pt
+            while curr in edges and curr not in visited:
+                visited.add(curr)
+                nxt = edges[curr]
+                loop.append(nxt)
+                if nxt == start_pt:
+                    break
+                curr = nxt
+            if len(loop) >= 4 and loop[0] == loop[-1]:
+                simplified = ramer_douglas_peucker(loop, epsilon)
+                if len(simplified) >= 3:
+                    loops.append(simplified)
+
+        if not loops:
+            continue
+
+        cmds = []
+        for loop in loops:
+            cmds.append(f"M{loop[0][0]},{loop[0][1]}")
+            for pt in loop[1:]:
+                cmds.append(f"L{pt[0]},{pt[1]}")
+            cmds.append("Z")
+
+        path_data = " ".join(cmds)
+        svg_paths.append(f'  <path fill="{color_hex}" fill-rule="evenodd" d="{path_data}"/>')
+
+    paths_str = "\n".join(svg_paths)
+    svg_body = (
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}">\n'
+        f'  <!-- Vectorized by SuperDrag -->\n'
+        f'{paths_str}\n'
+        f'</svg>\n'
+    )
+
+    out = sibling(src, ext=".svg")
+    out.write_text(svg_body, encoding="utf-8")
+    return out
+
+
+def image_to_svg(src: str | Path) -> list[Path]:
+    """Convert a raster image to SVG vector format."""
+    return [trace_bitmap_to_svg(src)]
+

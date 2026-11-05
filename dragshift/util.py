@@ -24,10 +24,12 @@ VIDEO_EXTS = {".mp4", ".mov", ".mkv", ".webm", ".avi", ".wmv", ".flv", ".m4v", "
 AUDIO_EXTS = {".mp3", ".m4a", ".wav", ".flac", ".ogg", ".opus", ".aiff", ".wma"}
 PDF_EXTS = {".pdf"}
 DOCX_EXTS = {".docx", ".doc", ".odt", ".pages", ".rtf"}
-TEXT_EXTS = {".txt", ".md", ".log", ".json", ".xml", ".html", ".htm"}
+TEXT_EXTS = {".txt", ".md", ".log", ".html", ".htm"}
+DATA_EXTS = {".json", ".yaml", ".yml", ".toml", ".xml"}
+FONT_EXTS = {".ttf", ".otf", ".woff", ".woff2"}
 SPREADSHEET_EXTS = {".xlsx", ".ods", ".csv", ".tsv"}
 SLIDE_EXTS = {".ppt", ".pptx"}
-SUBTITLE_EXTS = {".srt", ".vtt"}
+SUBTITLE_EXTS = {".srt", ".vtt", ".ass", ".ssa", ".smi"}
 ARCHIVE_EXTS = {".zip", ".tar", ".gz", ".tgz", ".bz2", ".xz", ".7z"}
 EPUB_EXTS = {".epub", ".mobi", ".fb2"}
 
@@ -48,6 +50,10 @@ def category(path: str | Path) -> str | None:
         return "audio"
     if ext in PDF_EXTS:
         return "pdf"
+    if ext in DATA_EXTS:
+        return "data"
+    if ext in FONT_EXTS:
+        return "font"
     if ext in SPREADSHEET_EXTS:
         return "spreadsheet"
     if ext in SLIDE_EXTS:
@@ -105,6 +111,8 @@ CONFIG = {
     "output": "next",        # "next" = beside the original, "folder" = a "SuperDrag" subfolder
     "jpg_quality": 90,
     "pdf_dpi": 200,
+    "naming_pattern": "{name}",  # e.g. "{name}_{date}", "{name} {label}"
+    "conflict_policy": "rename",  # "rename" = (1), (2); "overwrite" = replace; "skip" = keep
 }
 
 
@@ -116,14 +124,67 @@ def output_dir(src: str | Path) -> Path:
     return d
 
 
-def sibling(src: str | Path, suffix_label: str = "", ext: str | None = None) -> Path:
+def resolve_output_path(src: str | Path, suffix_label: str = "", ext: str | None = None,
+                        pattern: str | None = None, conflict: str | None = None,
+                        extra_tokens: dict[str, str] | None = None) -> Path:
+    """Tokenized output path resolver inspired by modern naming engines.
+
+    Tokens supported:
+      {name}       Original filename stem (e.g. 'report')
+      {ext}        Target extension without dot (e.g. 'webp')
+      {label}      Action suffix label (e.g. 'Compressed')
+      {date}       Current date (YYYY-MM-DD)
+      {time}       Current time (HHMMSS)
+      {res}        Resolution if available (e.g. '1920x1080')
+
+    Conflict policies:
+      'rename'     Append ' (1)', ' (2)' if destination exists (default)
+      'overwrite'  Always write directly to destination
+      'skip'       Return target path as-is
+    """
+    src = Path(src)
+    base_dir = output_dir(src)
+    pat = pattern or CONFIG.get("naming_pattern") or "{name}"
+    conflict_mode = conflict or CONFIG.get("conflict_policy") or "rename"
+
+    target_ext = ext if ext is not None else src.suffix
+    if not target_ext.startswith("."):
+        target_ext = "." + target_ext
+
+    import datetime
+    now = datetime.datetime.now()
+    tokens = {
+        "name": src.stem,
+        "ext": target_ext.lstrip("."),
+        "label": suffix_label,
+        "date": now.strftime("%Y-%m-%d"),
+        "time": now.strftime("%H%M%S"),
+        "res": "",
+    }
+    if extra_tokens:
+        tokens.update(extra_tokens)
+
+    formatted_name = pat
+    for k, v in tokens.items():
+        formatted_name = formatted_name.replace(f"{{{k}}}", str(v))
+
+    if suffix_label and "{label}" not in pat:
+        formatted_name = f"{formatted_name} {suffix_label}".strip()
+
+    target_path = base_dir / f"{formatted_name}{target_ext}"
+
+    if conflict_mode == "overwrite" or not target_path.exists():
+        return target_path
+    if conflict_mode == "rename":
+        return unique_path(target_path)
+    return target_path
+
+
+def sibling(src: str | Path, suffix_label: str = "", ext: str | None = None,
+            pattern: str | None = None, conflict: str | None = None,
+            extra_tokens: dict[str, str] | None = None) -> Path:
     """Output path for `src`. sibling('a.jpg', 'Cropped') -> 'a Cropped.jpg' (never overwrites)."""
-    s = output_dir(src) / Path(src).name
-    stem = f"{s.stem} {suffix_label}".strip() if suffix_label else s.stem
-    new_ext = ext if ext is not None else s.suffix
-    if not new_ext.startswith("."):
-        new_ext = "." + new_ext
-    return unique_path(s.with_name(stem + new_ext))
+    return resolve_output_path(src, suffix_label, ext, pattern, conflict, extra_tokens)
 
 
 def human_size(n: int | float) -> str:

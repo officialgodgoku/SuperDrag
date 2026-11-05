@@ -39,7 +39,9 @@ def pdf(tmp_path, img) -> Path:
 def test_image_targets(img, target):
     out = convert.convert(img, "image", target)[0]
     assert out.exists() and out.stat().st_size > 0
-    if target != "PDF":
+    if target == "SVG":
+        assert "<svg" in out.read_text(encoding="utf-8")
+    elif target != "PDF":
         Image.open(out).load()
 
 

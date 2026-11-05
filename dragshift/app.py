@@ -32,7 +32,7 @@ IPC_NAME = ipc_name()
 GLYPHS = {
     # Image tools
     "Compress": "⇲", "Metadata": "ⓘ", "Redact": "▮", "Crop": "⌗", "Edit": "☼",
-    "Annotate": "✎", "Add BG": "▣", "Remove BG": "🪄", "Resize": "⤢",
+    "Annotate": "✎", "Add BG": "▣", "Remove BG": "🪄", "Resize": "⤢", "Vectorize": "⬡",
     # PDF tools
     "Split": "✂", "Rotate": "⟳", "Merge": "⧉", "Protect": "⚿", "Extract": "⧈", "Organize": "📑",
     # Video tools
@@ -50,6 +50,7 @@ HINTS = {
     "Compress": "Shrink file size", "Metadata": "View · remove GPS", "Redact": "Hide private info",
     "Crop": "Trim or crop", "Edit": "Light · colour · rotate", "Annotate": "Arrows · text · steps",
     "Add BG": "Gradient backdrop", "Remove BG": "Remove background · cutout", "Resize": "Change dimensions",
+    "Vectorize": "Trace into scalable vector SVG",
     # PDF
     "Split": "One PDF per page", "Rotate": "Turn pages 90°", "Merge": "Join into one PDF",
     "Protect": "Add a password", "Extract": "Save embedded images", "Organize": "Rearrange or split pages",
@@ -71,8 +72,8 @@ HINTS = {
 FORMAT_HINTS = {
     # Images
     "JPG": "Small, universal", "PNG": "Lossless · transparency", "WEBP": "Smallest for web",
-    "HEIC": "iPhone format", "TIFF": "Print · archival", "AVIF": "Next-gen, tiny",
-    "BMP": "Uncompressed", "PDF": "Document", "ICO": "Windows icon", "GIF": "Animated / web",
+    "SVG": "Scalable vector graphics", "HEIC": "iPhone format", "TIFF": "Print · archival",
+    "AVIF": "Next-gen, tiny", "BMP": "Uncompressed", "PDF": "Document", "ICO": "Windows icon", "GIF": "Animated / web",
     # Video
     "MP4": "Universal video (H.264)", "WEBM": "Web video (VP9)", "MOV": "Apple QuickTime",
     "MKV": "Matroska container", "AVI": "Classic video", "WMV": "Windows Media Video",
@@ -85,15 +86,21 @@ FORMAT_HINTS = {
     "PPT": "PowerPoint 97-2003", "XLSX": "Excel spreadsheet", "ODS": "OpenDocument spreadsheet",
     "CSV": "Comma-separated values", "TSV": "Tab-separated values", "EPUB": "E-book format",
     "TXT": "Plain text", "MD": "Markdown document", "HTML": "Web document",
+    # Structured Data
+    "JSON": "JavaScript Object Notation", "YAML": "YAML configuration",
+    "TOML": "Tom's Obvious Minimal Language", "XML": "Extensible Markup Language",
+    # Fonts
+    "WOFF2": "Next-gen compressed web font", "WOFF": "Web Open Font Format",
+    "TTF": "TrueType desktop font", "OTF": "OpenType desktop font",
     # Subtitles
-    "SRT": "SubRip subtitles", "VTT": "WebVTT subtitles",
+    "SRT": "SubRip subtitles", "VTT": "WebVTT subtitles", "ASS": "Advanced SubStation Alpha",
     # Archives
     "ZIP": "Standard Zip archive", "ZIP (Deflate)": "Standard Zip archive", "ZIP (Max)": "Max compression (L9)",
     "ZIP (Store)": "Store without compression", "ZIP (BZIP2)": "Bzip2 compression",
     "ZIP (LZMA)": "LZMA ultra compression", "TAR.GZ": "Gzipped Tarball", "TAR": "Uncompressed Tarball",
 }
 
-IMAGE_TOOLS = ["Compress", "Resize", "Crop", "Edit", "Annotate", "Redact", "Add BG", "Remove BG", "Metadata"]
+IMAGE_TOOLS = ["Compress", "Resize", "Vectorize", "Crop", "Edit", "Annotate", "Redact", "Add BG", "Remove BG", "Metadata"]
 VIDEO_TOOLS = ["Compress", "Metadata", "Mute", "Trim", "Crop", "Speed", "Snapshot", "Split", "Redact"]
 AUDIO_TOOLS = ["Compress", "Metadata", "Normalize", "Visualize", "Trim", "Channels", "Bleep"]
 PDF_TOOLS = ["Compress", "Metadata", "Split", "Organize", "Rotate", "Protect", "Extract"]
@@ -350,8 +357,8 @@ class SuperDragApp(QObject):
                     actions.share_airdrop(paths)
                     self.toasts.info("AirDrop", f"{len(paths)} item(s) shared")
                 else:
-                    actions.share_localsend(paths)
-                    self.toasts.info("LocalSend", f"{len(paths)} item(s) shared to LocalSend")
+                    from .localsend_ui import LocalSendWindow
+                    self.open_window(LocalSendWindow(paths, self.toasts.info, self.toasts.error))
             elif name == "float":
                 self.get_shelf().add_files(paths)
                 self.toasts.info("Pinned to Shelf", f"{len(paths)} item(s) pinned to Float Shelf")
@@ -481,6 +488,10 @@ class SuperDragApp(QObject):
                     self.open_window(tools.CompressWindow(paths, self.notify))
                 elif name == "Resize":
                     self.open_window(tools.ResizeWindow(paths, self.notify))
+                elif name == "Vectorize":
+                    self.submit("tool:Vectorize", paths,
+                                lambda: [imaging.trace_bitmap_to_svg(p) for p in paths],
+                                "Tracing vector SVG…")
                 elif name == "Remove BG" and len(paths) > 1:
                     self.submit("tool:Remove BG", paths,
                                 lambda: [imaging.remove_background_file(p) for p in paths],

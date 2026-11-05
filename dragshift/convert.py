@@ -23,15 +23,17 @@ try:
 except ImportError:  # pragma: no cover
     import fitz  # type: ignore
 
-IMAGE_TARGETS = ["PNG", "JPG", "WEBP", "HEIC", "TIFF", "AVIF", "BMP", "PDF", "ICO", "GIF"]
+IMAGE_TARGETS = ["PNG", "JPG", "WEBP", "SVG", "HEIC", "TIFF", "AVIF", "BMP", "PDF", "ICO", "GIF"]
 VIDEO_TARGETS = ["MP4", "MKV", "WEBM", "AVI", "WMV", "GIF", "MP3", "MOV", "WAV"]
 AUDIO_TARGETS = ["MP3", "M4A", "WAV", "FLAC", "OGG", "OPUS", "AIFF", "WMA"]
 PDF_TARGETS = ["DOCX", "PAGES", "PPTX", "XLSX", "JPG", "PNG", "EPUB", "TXT", "MD"]
 DOCX_TARGETS = ["PDF", "DOCX", "TXT", "MD", "HTML", "EPUB", "JPG", "PNG"]
 TEXT_TARGETS = ["PDF", "DOCX", "TXT", "MD", "HTML", "EPUB", "JPG", "PNG"]
+DATA_TARGETS = ["JSON", "YAML", "TOML", "XML", "CSV"]
+FONT_TARGETS = ["WOFF2", "WOFF", "TTF", "OTF"]
 SPREADSHEET_TARGETS = ["ODS", "CSV", "TSV", "PDF", "XLSX"]
 SLIDE_TARGETS = ["PDF", "JPG", "PNG"]
-SUBTITLE_TARGETS = ["VTT", "SRT", "TXT"]
+SUBTITLE_TARGETS = ["VTT", "SRT", "ASS", "TXT"]
 EPUB_TARGETS = ["PDF", "DOCX", "PAGES", "TXT", "MD", "HTML"]
 ARCHIVE_TARGETS = ["ZIP", "ZIP (Max)", "ZIP (Store)", "ZIP (BZIP2)", "ZIP (LZMA)", "TAR.GZ", "TAR"]
 
@@ -130,6 +132,9 @@ def atomic_save(write, out):
 
 def image_to(src: str | Path, target: str) -> list[Path]:
     target = target.upper()
+    if target == "SVG":
+        from . import imaging
+        return imaging.image_to_svg(src)
     im = open_image(src)
     out = sibling(src, ext="." + target.lower())
     save_image(im, out, target)
@@ -381,6 +386,10 @@ def targets_for(cat: str, src_ext: str) -> list[str]:
         return [x for x in DOCX_TARGETS if x != cur]
     if cat == "text":
         return [x for x in TEXT_TARGETS if x != cur]
+    if cat == "data":
+        return [x for x in DATA_TARGETS if x != cur]
+    if cat == "font":
+        return [x for x in FONT_TARGETS if x != cur]
     if cat == "spreadsheet":
         return [x for x in SPREADSHEET_TARGETS if x != cur]
     if cat == "slides":
@@ -409,6 +418,12 @@ def convert(src: str | Path, cat: str, target: str) -> list[Path]:
             from . import video
             return video.convert_video(src, "MP4")
         return image_to(src, target_up)
+    if cat == "data":
+        from . import data
+        return data.convert_data(src, target_up)
+    if cat == "font":
+        from . import fonts
+        return fonts.convert_font(src, target_up)
     if cat == "spreadsheet":
         from . import sheets
         return sheets.convert_sheet(src, target_up)

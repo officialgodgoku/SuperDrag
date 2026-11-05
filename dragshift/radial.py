@@ -123,8 +123,10 @@ class RadialMenu(QWidget):
         self.click_mode = False  # opened from tray/menu instead of a drag
         self._t = 1.0            # pop-in animation 0..1
         self._swap = 1.0         # ring-swap animation 0..1
-        self.spring: list[float] = []   # per-petal hover amount 0..1 (eased every frame)
+        self.spring: list[float] = []   # per-petal hover amount 0..1 (spring-simulated)
+        self.spring_vel: list[float] = []
         self.hub_spring = 0.0
+        self.hub_spring_vel = 0.0
 
         self.anim = QVariantAnimation(self, startValue=0.0, endValue=1.0, duration=190,
                                       easingCurve=QEasingCurve.OutBack)
@@ -264,6 +266,7 @@ class RadialMenu(QWidget):
         for items in self.rings.values():
             self._render(len(items))
         self.spring = [0.0] * len(self.items)
+        self.spring_vel = [0.0] * len(self.items)
         self._shape()
         self.update()
 
@@ -279,6 +282,7 @@ class RadialMenu(QWidget):
             self.ring_idx = idx
             self.hover = -1
             self.spring = [0.0] * len(self.items)
+            self.spring_vel = [0.0] * len(self.items)
             self._swap = 0.0
             self.swap_anim.start()
             self._shape()
@@ -308,6 +312,7 @@ class RadialMenu(QWidget):
             if self.hover != -2:
                 self.hover = -1
             self.spring = [0.0] * len(self.items)
+            self.spring_vel = [0.0] * len(self.items)
             self._swap = 0.0
             self.swap_anim.start()
             self._shape()
@@ -323,22 +328,39 @@ class RadialMenu(QWidget):
 
     def _tick(self):
         moved = False
+        tension = 0.28
+        damping = 0.72
+
+        if len(self.spring_vel) != len(self.spring):
+            self.spring_vel = [0.0] * len(self.spring)
+
         for i in range(len(self.spring)):
             target = 1.0 if i == self.hover else 0.0
-            v = self.spring[i]
-            nv = v + (target - v) * 0.32
-            if abs(nv - target) < 0.003:
-                nv = target
-            if nv != v:
-                self.spring[i] = nv
+            pos = self.spring[i]
+            vel = self.spring_vel[i]
+            vel = (vel + (target - pos) * tension) * damping
+            pos += vel
+            if abs(pos - target) < 0.002 and abs(vel) < 0.002:
+                pos = target
+                vel = 0.0
+            if pos != self.spring[i]:
+                self.spring[i] = pos
+                self.spring_vel[i] = vel
                 moved = True
+
         ht = 1.0 if self.hover == -2 else 0.0
-        nh = self.hub_spring + (ht - self.hub_spring) * 0.3
-        if abs(nh - ht) < 0.003:
-            nh = ht
-        if nh != self.hub_spring:
-            self.hub_spring = nh
+        h_pos = self.hub_spring
+        h_vel = self.hub_spring_vel
+        h_vel = (h_vel + (ht - h_pos) * tension) * damping
+        h_pos += h_vel
+        if abs(h_pos - ht) < 0.002 and abs(h_vel) < 0.002:
+            h_pos = ht
+            h_vel = 0.0
+        if h_pos != self.hub_spring:
+            self.hub_spring = h_pos
+            self.hub_spring_vel = h_vel
             moved = True
+
         if moved:
             self.update()
 
@@ -382,9 +404,8 @@ class RadialMenu(QWidget):
     # ------------------------------------------------------------ drag & drop
     @staticmethod
     def _local_paths(md) -> list[str]:
-        if not md.hasUrls():
-            return []
-        return [u.toLocalFile() for u in md.urls() if u.isLocalFile() and u.toLocalFile()]
+        from . import fetcher
+        return fetcher.extract_sources_from_mimedata(md)
 
     def dragEnterEvent(self, e):
         paths = self._local_paths(e.mimeData())

@@ -115,8 +115,18 @@ def open_terminal(paths: list[str] | str) -> str:
         return f"Terminal opened at {target_dir.name}"
 
 
-def share_localsend(paths: list[str]) -> str:
-    """Share files and folders through LocalSend."""
+def share_localsend(paths: list[str], target_ip: str | None = None) -> str:
+    """Share files and folders through LocalSend protocol natively or via desktop app."""
+    if target_ip:
+        from .localsend import LocalSendDevice, LocalSendSender
+        dev = LocalSendDevice(alias=f"Device ({target_ip})", ip=target_ip)
+        sender = LocalSendSender(dev)
+        try:
+            sender.send(paths)
+            return f"Successfully sent {len(paths)} file(s) to {target_ip}"
+        except Exception as e:
+            return f"Failed to send to {target_ip}: {e}"
+
     return share_via_localsend_or_airdrop(paths)
 
 
