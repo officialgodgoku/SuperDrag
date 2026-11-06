@@ -322,9 +322,16 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # 1. Upload to release v1.2.0
-          echo "Attaching assets to v1.2.0 release..."
-          gh release upload v1.2.0 out/* --clobber || true
+          # 1. Upload to tag release if triggered by a tag
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            TAG="${{ github.ref_name }}"
+            echo "Attaching assets to $TAG release..."
+            if gh release view "$TAG" >/dev/null 2>&1; then
+              gh release upload "$TAG" out/* --clobber
+            else
+              gh release create "$TAG" out/* --title "SuperDrag $TAG" --generate-notes
+            fi
+          fi
 
           # 2. Upload to latest release
           echo "Attaching assets to latest release..."

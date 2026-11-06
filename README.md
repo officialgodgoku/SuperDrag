@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/officialgodgoku/SuperDrag/releases/latest"><img src="https://img.shields.io/badge/version-1.2.0-blue.svg?style=flat-square" alt="Version 1.2.0"></a>
+  <a href="https://github.com/officialgodgoku/SuperDrag/releases/latest"><img src="https://img.shields.io/badge/version-1.2.1-blue.svg?style=flat-square" alt="Version 1.2.1"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green.svg?style=flat-square" alt="License MIT"></a>
   <a href="https://www.python.org"><img src="https://img.shields.io/badge/python-3.11+-3776AB.svg?style=flat-square&logo=python&logoColor=white" alt="Python 3.11+"></a>
   <a href="https://buymeacoffee.com/officialgodgoku"><img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee"></a>
