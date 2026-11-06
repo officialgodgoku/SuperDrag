@@ -1,0 +1,272 @@
+[   0.00] ChangeDisplaySettings -> 0
+[   9.59] PASS explorer JPG → PNG                            9.6s  Photo.png · 2400×1600
+[  16.16] PASS explorer JPG → WEBP                           6.0s  Photo.webp · 2400×1600
+[  23.98] PASS explorer JPG → HEIC                           7.2s  Photo.heic · 2400×1600
+[  30.00] PASS explorer JPG → TIFF                           5.4s  Photo.tiff · 2400×1600
+[  36.87] PASS explorer JPG → AVIF                           6.3s  Photo.avif · 2400×1600
+[  42.86] PASS explorer JPG → BMP                            5.4s  Photo.bmp · 2400×1600
+[  48.87] PASS explorer JPG → PDF                            5.4s  Photo.pdf · 1 page(s)
+[  54.84] PASS explorer JPG → ICO                            5.4s  Photo.ico · 128×86
+[  61.08] PASS explorer JPG → GIF                            5.6s  Photo.gif · 2400×1600
+[  67.08] PASS explorer PNG → JPG                            5.4s  Graphic.jpg · 800×533
+[  74.22] PASS explorer PDF → JPG (3 pages)                  6.5s  3 × .jpg
+[  81.59] PASS explorer PDF → PNG (3 pages)                  6.8s  3 × .png
+[  87.88] PASS explorer PDF → DOCX                           5.7s  Report.docx
+[  93.84] PASS explorer PDF → TXT                            5.4s  Report.txt
+[  99.81] PASS explorer DOCX → PDF                           5.4s  Letter.pdf · 1 page(s)
+[ 105.78] PASS explorer DOCX → TXT                           5.4s  Letter.txt
+[ 111.78] PASS explorer TXT → PDF                            5.4s  Notes.pdf · 1 page(s)
+[ 117.79] PASS explorer TXT → DOCX                           5.4s  Notes.docx
+[ 125.80] PASS explorer 2 images → 1 PDF                     7.4s  2 images → 2-page PDF
+[ 144.19] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 247, in drive_compress
+    w = tool_win("Compress.*")
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Compress.*
+
+[ 144.93] FAIL explorer Compress to 200 KB                  18.5s  RuntimeError: window not found: Compress.*
+[ 163.29] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 258, in drive_resize
+    w = tool_win("Resize.*")
+        ^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Resize.*
+
+[ 164.05] FAIL explorer Resize 50%                          18.5s  RuntimeError: window not found: Resize.*
+[ 182.46] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 267, in drive_crop
+    w = tool_win("Crop Image.*")
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Crop Image.*
+
+[ 183.22] FAIL explorer Crop 1:1                            18.6s  RuntimeError: window not found: Crop Image.*
+[ 201.52] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 274, in drive_edit
+    w = tool_win("Edit.*")
+        ^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Edit.*
+
+[ 202.25] FAIL explorer Edit: auto + rotate                 18.4s  RuntimeError: window not found: Edit.*
+[ 221.36] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 290, in drive_annotate
+    w = tool_win("Annotate.*")
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Annotate.*
+
+[ 222.08] FAIL explorer Annotate                            19.2s  RuntimeError: window not found: Annotate.*
+[ 240.40] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 306, in drive_redact
+    w = tool_win("Redact.*")
+        ^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Redact.*
+
+[ 241.13] FAIL explorer Redact                              18.4s  RuntimeError: window not found: Redact.*
+[ 259.46] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 319, in drive_addbg
+    w = tool_win("Add BG.*")
+        ^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Add BG.*
+
+[ 260.21] FAIL explorer Add BG 1:1                          18.5s  RuntimeError: window not found: Add BG.*
+[ 278.69] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 326, in drive_meta_location
+    w = tool_win("Metadata.*")
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Metadata.*
+
+[ 279.44] FAIL explorer Metadata: remove location           18.6s  RuntimeError: window not found: Metadata.*
+[ 297.92] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 332, in drive_meta_all
+    w = tool_win("Metadata.*")
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Metadata.*
+
+[ 298.71] FAIL explorer Metadata: remove all                18.7s  RuntimeError: window not found: Metadata.*
+[ 305.72] PASS explorer PDF Compress                         6.4s  227 KB → 232 KB
+[ 317.52] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 216, in run
+    note = verify(outs, srcs)
+           ^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 432, in v
+    assert len(pdfs) == n, f"{len(pdfs)} PDFs"
+           ^^^^^^^^^^^^^^
+AssertionError: 0 PDFs
+
+[ 318.30] FAIL explorer PDF Split                           12.0s  AssertionError: 0 PDFs
+[ 327.16] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 216, in run
+    note = verify(outs, srcs)
+           ^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 447, in v_rotated
+    assert all(p.rotation == 90 for p in d)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+[ 328.01] FAIL explorer PDF Rotate                           9.1s  AssertionError: 
+[ 346.48] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 338, in drive_protect
+    w = tool_win("Password-protect.*")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Password-protect.*
+
+[ 347.23] FAIL explorer PDF Protect                         18.6s  RuntimeError: window not found: Password-protect.*
+[ 354.12] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 216, in run
+    note = verify(outs, srcs)
+           ^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 472, in v_extract
+    assert outs and all(o.parent.name.endswith("images") for o in outs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+
+[ 354.88] FAIL explorer PDF Extract images                   7.0s  AssertionError: 
+[ 373.21] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 332, in drive_meta_all
+    w = tool_win("Metadata.*")
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Metadata.*
+
+[ 373.94] FAIL explorer PDF Metadata                        18.5s  RuntimeError: window not found: Metadata.*
+[ 384.41] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 216, in run
+    note = verify(outs, srcs)
+           ^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 440, in v_merged
+    assert got == total, f"{got} pages, expected {total}"
+           ^^^^^^^^^^^^
+AssertionError: 1 pages, expected 5
+
+[ 385.14] FAIL explorer Merge 2 PDFs                        10.6s  AssertionError: 1 pages, expected 5
+[ 391.32] PASS send-to  Send To → PNG                        5.6s  Photo.png · 2400×1600
+[ 397.24] PASS desktop  Desktop: JPG → PNG                   5.9s  D-Photo.png · 2400×1600
+[ 402.89] PASS desktop  Desktop: PDF → TXT                   5.0s  D-Report.txt
+[ 408.58] PASS desktop  Desktop: DOCX → PDF                  5.1s  D-Letter.pdf · 1 page(s)
+[ 426.59] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 247, in drive_compress
+    w = tool_win("Compress.*")
+        ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Compress.*
+
+[ 427.34] FAIL desktop  Desktop: Compress                   18.2s  RuntimeError: window not found: Compress.*
+[ 445.43] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 267, in drive_crop
+    w = tool_win("Crop Image.*")
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Crop Image.*
+
+[ 446.17] FAIL desktop  Desktop: Crop                       18.2s  RuntimeError: window not found: Crop Image.*
+[ 464.14] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 212, in run
+    tool()
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 319, in drive_addbg
+    w = tool_win("Add BG.*")
+        ^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 243, in tool_win
+    return wk.find_window(title_re, 12)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\winkit.py", line 176, in find_window
+    raise RuntimeError(f"window not found: {title_re}")
+RuntimeError: window not found: Add BG.*
+
+[ 464.88] FAIL desktop  Desktop: Add BG                     18.1s  RuntimeError: window not found: Add BG.*
+[ 474.42] Traceback (most recent call last):
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 216, in run
+    note = verify(outs, srcs)
+           ^^^^^^^^^^^^^^^^^^
+  File "D:\a\SuperDrag\SuperDrag\demo\e2e_windows.py", line 440, in v_merged
+    assert got == total, f"{got} pages, expected {total}"
+           ^^^^^^^^^^^^
+AssertionError: 1 pages, expected 5
+
+[ 475.18] FAIL desktop  Desktop: 2 PDFs merge                9.7s  AssertionError: 1 pages, expected 5
+[ 477.44] DONE 25/44 passed

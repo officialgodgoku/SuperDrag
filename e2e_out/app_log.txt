@@ -1,0 +1,52 @@
+
+==== SuperDrag 1.2.1 started 2026-11-06 05:10:36 ====
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+Windows fatal exception: code 0x8001010d
+
+Current thread 0x00001a28 (most recent call first):
+  File "D:\a\SuperDrag\SuperDrag\superdrag\app.py", line 718 in main
+  File "D:\a\SuperDrag\SuperDrag\superdrag\__main__.py", line 15 in <module>
+  File "<frozen runpy>", line 88 in _run_code
+  File "<frozen runpy>", line 198 in _run_module_as_main
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 390x130
+IPC: 1 file(s) handed over
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 376x71
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 376x71
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 376x71
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 376x71
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 376x71
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 376x71
+menu: hid 1 drag image(s) during capture: SysDragImage ex=0x000800a8 452x301
